@@ -4,14 +4,14 @@ namespace App\Providers;
 
 use App\Models\Attendance;
 use App\Models\BoqItem;
+use App\Models\Contractor;
+use App\Models\ContractorPayment;
 use App\Models\DailySiteReport;
 use App\Models\MaterialRequisition;
 use App\Models\Project;
 use App\Models\ProjectJob;
 use App\Models\PurchaseOrder;
 use App\Models\RunningBill;
-use App\Models\Contractor;
-use App\Models\ContractorPayment;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Observers\AuditObserver;

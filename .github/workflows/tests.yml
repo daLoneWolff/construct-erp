@@ -31,6 +31,17 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Prepare CI environment
+        run: |
+          cp .env.example .env
+          php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+          sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
+          sed -i 's/^DB_HOST=.*/DB_HOST=/' .env
+          sed -i 's/^DB_PORT=.*/DB_PORT=/' .env
+          sed -i 's/^DB_DATABASE=.*/DB_DATABASE=database\/database.sqlite/' .env
+          sed -i 's/^DB_USERNAME=.*/DB_USERNAME=/' .env
+          sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=/' .env
+
       - name: Setup Application
         run: composer setup
 

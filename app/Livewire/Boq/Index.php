@@ -5,6 +5,7 @@ namespace App\Livewire\Boq;
 use App\Models\BoqClause;
 use App\Models\BoqItem;
 use App\Models\Project;
+use App\Services\CalculationService;
 use App\Support\Npr;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Title;
@@ -191,7 +192,7 @@ class Index extends Component
             ->get();
 
         $progress = $headers->flatMap->clauses->flatMap->items->mapWithKeys(
-            fn (BoqItem $item) => [$item->id => app(\App\Services\CalculationService::class)->boqItemProgress($item)]
+            fn (BoqItem $item) => [$item->id => app(CalculationService::class)->boqItemProgress($item)]
         );
 
         return view('livewire.boq.index', [

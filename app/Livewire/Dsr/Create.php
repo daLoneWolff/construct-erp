@@ -4,10 +4,11 @@ namespace App\Livewire\Dsr;
 
 use App\Enums\DsrStatus;
 use App\Models\BoqItem;
-use App\Models\DailySiteReport;
 use App\Models\DsrManpower;
 use App\Models\Project;
 use App\Support\DecimalFormat;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -115,25 +116,25 @@ class Create extends Component
                 'required',
                 'date',
                 'before_or_equal:today',
-                \Illuminate\Validation\Rule::unique('daily_site_reports', 'report_date')
+                Rule::unique('daily_site_reports', 'report_date')
                     ->where('project_id', $this->project->id),
             ],
-            'weather' => ['required', \Illuminate\Validation\Rule::in(self::WEATHER)],
+            'weather' => ['required', Rule::in(self::WEATHER)],
             'remarks' => ['nullable', 'string', 'max:2000'],
             'manpower' => ['required', 'array', 'min:1'],
-            'manpower.*.trade' => ['required', \Illuminate\Validation\Rule::in(DsrManpower::TRADES)],
+            'manpower.*.trade' => ['required', Rule::in(DsrManpower::TRADES)],
             'manpower.*.count' => ['required', 'integer', 'min:1', 'max:1000'],
             'manpower.*.hours' => ['required', 'numeric', 'min:0', 'max:24'],
             'equipment' => ['array'],
             'equipment.*.equipment_id' => [
                 'required',
-                \Illuminate\Validation\Rule::exists('equipment', 'id'),
+                Rule::exists('equipment', 'id'),
             ],
             'equipment.*.hours' => ['required', 'numeric', 'min:0', 'max:24'],
             'materials' => ['array'],
             'materials.*.boq_item_id' => [
                 'required',
-                \Illuminate\Validation\Rule::exists('boq_items', 'id'),
+                Rule::exists('boq_items', 'id'),
             ],
             'materials.*.quantity' => ['required', 'numeric', 'min:0.001'],
             'photos' => ['array'],
@@ -158,7 +159,7 @@ class Create extends Component
             }
         }
 
-        $report = \Illuminate\Support\Facades\DB::transaction(function () use ($boqItems) {
+        $report = DB::transaction(function () use ($boqItems) {
             $report = $this->project->dailySiteReports()->create([
                 'report_date' => $this->reportDate,
                 'submitted_by_employee_id' => auth()->user()->employee_id

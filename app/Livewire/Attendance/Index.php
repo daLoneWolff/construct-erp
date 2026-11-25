@@ -6,6 +6,7 @@ use App\Enums\AttendanceStatus;
 use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Project;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Title;
@@ -90,7 +91,7 @@ class Index extends Component
         });
 
         session()->flash('success', __('Attendance saved for :date (:count employees).', [
-            'date' => \Illuminate\Support\Carbon::parse($this->date)->format('d/m/Y'),
+            'date' => Carbon::parse($this->date)->format('d/m/Y'),
             'count' => $employeeIds->count(),
         ]));
     }

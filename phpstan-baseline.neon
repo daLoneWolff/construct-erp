@@ -1,0 +1,1555 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Trait App\\Concerns\\ProfileValidationRules is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: app/Concerns/ProfileValidationRules.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(string\|null\)\: mixed\)\|null, ''trim'' given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Http/Controllers/BoqController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/BoqController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fputcsv expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Http/Controllers/BoqController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between non\-empty\-list\<string\|null\> and array\{\} will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/BoqController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\:\:sum\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/PaymentPrintController.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type App\\Enums\\Role\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Middleware/EnsureRole.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Attendance/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Attendance\\Index\:\:employees\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Attendance/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Attendance\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Attendance/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>overtime_hours" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Attendance/Index.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\HigherOrderCollectionProxy\<string, Illuminate\\Database\\Eloquent\\Model, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\>\>\:\:\$clauses\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Boq/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Boq\\Index\:\:itemQuery\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Boq/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Boq\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Boq/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Contractors\\Form\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Contractors/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Contractors\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Contractors/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Contractors\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Contractors/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\Documents\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Documents/Index.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:equipment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:manpower\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:materials\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:photos\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Dsr\\Create\:\:blankManpower\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Dsr\\Create\:\:blankMaterial\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Dsr\\Create\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Offset ''boq_item_id'' on array\{boq_item_id\: int\|string, quantity\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Offset ''count'' on array\{trade\: string, count\: int\|string, hours\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Offset ''equipment_id'' on array\{equipment_id\: int\|string, hours\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Offset ''quantity'' on array\{boq_item_id\: int\|string, quantity\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\Dsr\\Create\:\:\$manpower \(array\<int, array\{trade\: string, count\: int\|string, hours\: int\|string\}\>\) does not accept array\{array\}\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\Dsr\\Create\:\:\$manpower \(array\<int, array\{trade\: string, count\: int\|string, hours\: int\|string\}\>\) does not accept non\-empty\-array\<int, array\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\Dsr\\Create\:\:\$materials \(array\<int, array\{boq_item_id\: int\|string, quantity\: int\|string\}\>\) does not accept array\{array\}\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\Dsr\\Create\:\:\$materials \(array\<int, array\{boq_item_id\: int\|string, quantity\: int\|string\}\>\) does not accept non\-empty\-array\<int, array\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Dsr/Create.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$report_date\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Livewire/Dsr/Index.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Dsr/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Dsr\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Dsr/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Dsr\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Dsr/Show.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\DsrStatus\:\:Submitted will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Dsr/Show.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Livewire/Dsr/Show.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Livewire/Employees/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Employees\\Form\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Employees/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Employees\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Employees/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Livewire/Equipment/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Equipment\\Form\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Equipment/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Equipment/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Equipment/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>type" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Equipment/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Equipment\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Equipment/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Equipment\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Equipment/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\Issues\\Create\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Issues/Create.php
+
+		-
+			message: '#^Offset ''boq_item_id'' on array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Issues/Create.php
+
+		-
+			message: '#^Offset ''description'' on array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Issues/Create.php
+
+		-
+			message: '#^Offset ''quantity'' on array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Issues/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\Issues\\Create\:\:\$items \(array\<int, array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string\}\>\) does not accept non\-empty\-array\<int, array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string\}\|array\{description\: string, unit\: string\}\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Issues/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Issues\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Issues/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Milestones/Index.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Milestones/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Milestones\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Milestones/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\MilestoneStatus\:\:InProgress will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Milestones/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\MilestoneStatus\:\:Pending will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: app/Livewire/Milestones/Index.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Livewire/Milestones/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Payments\\Form\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Payments/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>contractor" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Payments/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>contractor_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Payments/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>job" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Livewire/Payments/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>payment_no" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Livewire/Payments/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Payments\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Payments/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Payments\\ProjectSummary\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Payments/ProjectSummary.php
+
+		-
+			message: '#^Method App\\Livewire\\Payments\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Payments/Show.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/ProjectJobs/Form.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/ProjectJobs/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\ProjectJobs\\Form\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/ProjectJobs/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\ProjectJobs\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/ProjectJobs/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\ProjectJobs\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/ProjectJobs/Show.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Projects/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Create\:\:managers\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Create\:\:payload\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Projects/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Create\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Create\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Projects/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Create\:\:save\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Create.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Projects/Edit.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Edit\:\:managers\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Edit.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Edit\:\:payload\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Projects/Edit.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Edit\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Edit.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Edit\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Projects/Edit.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Edit\:\:save\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Edit.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Projects\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Projects/Show.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments string, array\{App\\Enums\\RequisitionStatus\:\:Approved, App\\Enums\\RequisitionStatus\:\:PoGenerated\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\PurchaseOrders\\Create\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\PurchaseOrders\\Create\:\:totals\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Offset ''boq_item_id'' on array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Offset ''description'' on array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Offset ''quantity'' on array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 2
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Offset ''rate_npr'' on array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 2
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\PurchaseOrders\\Create\:\:\$items \(array\<int, array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\}\>\) does not accept non\-empty\-array\<int, array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\}\|array\{description\: string, unit\: string, rate_npr\: string\}\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\PurchaseOrders\\Create\:\:\$items \(array\<int, array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\}\>\) does not accept non\-empty\-array\<int, array\{description\: string, unit\: string, quantity\: int\|string, rate_npr\: string, boq_item_id\: int\|string\}\|array\{description\: string, unit\: string\}\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>tds_rate" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/PurchaseOrders/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\PurchaseOrders\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/PurchaseOrders/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\PurchaseOrders\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/PurchaseOrders/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\Receipts\\Create\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Receipts/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\Receipts\\Create\:\:\$items \(array\<int, array\{purchase_order_item_id\: int\|string, description\: string, unit\: string, ordered_qty\: int\|string, received_qty\: int\|string, rejected_qty\: int\|string\}\>\) does not accept non\-empty\-array\<int, array\{purchase_order_item_id\: int\|string, description\: string, unit\: string, ordered_qty\: float\|int\|string, received_qty\: NAN\|float\<5\.0E\-324, max\>\|int\|string, rejected_qty\: int\|string\}\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Receipts/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Receipts\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Receipts/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Receipts\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Receipts/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\Reconciliation\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Reconciliation/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Reports\\AttendanceSummary\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Reports/AttendanceSummary.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Reports/AttendanceSummary.php
+
+		-
+			message: '#^Method App\\Livewire\\Reports\\MilestoneProgress\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Reports/MilestoneProgress.php
+
+		-
+			message: '#^Method App\\Livewire\\Reports\\PoStatus\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Reports/PoStatus.php
+
+		-
+			message: '#^Method App\\Livewire\\Reports\\ProjectSummary\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Reports/ProjectSummary.php
+
+		-
+			message: '#^Method App\\Livewire\\Reports\\Reconciliation\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Reports/Reconciliation.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Reports/Reconciliation.php
+
+		-
+			message: '#^Method App\\Livewire\\Requisitions\\Create\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Requisitions/Create.php
+
+		-
+			message: '#^Offset ''boq_item_id'' on array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string, notes\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Requisitions/Create.php
+
+		-
+			message: '#^Offset ''description'' on array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string, notes\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Requisitions/Create.php
+
+		-
+			message: '#^Offset ''quantity'' on array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string, notes\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Requisitions/Create.php
+
+		-
+			message: '#^Property App\\Livewire\\Requisitions\\Create\:\:\$items \(array\<int, array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string, notes\: string\}\>\) does not accept non\-empty\-array\<int, array\{description\: string, unit\: string, quantity\: int\|string, boq_item_id\: int\|string, notes\: string\}\|array\{description\: string, unit\: string\}\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Requisitions/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\Requisitions\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Requisitions/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Requisitions\\Show\:\:generatePo\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Requisitions/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\Requisitions\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Requisitions/Show.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\RequisitionStatus\:\:Approved will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Requisitions/Show.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\RequisitionStatus\:\:Pending will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: app/Livewire/Requisitions/Show.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 3
+			path: app/Livewire/Requisitions/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\RunningBills\\Create\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/RunningBills/Create.php
+
+		-
+			message: '#^Method App\\Livewire\\RunningBills\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/RunningBills/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\RunningBills\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/RunningBills/Show.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\RunningBillStatus\:\:Draft will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/RunningBills/Show.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\RunningBillStatus\:\:Draft will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Livewire/RunningBills/Show.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Livewire/RunningBills/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\StockLedger\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/StockLedger/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Vehicles/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Vehicles\\Form\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Vehicles/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>make_model" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Vehicles/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>registration_no" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Vehicles/Form.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>type" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Vehicles/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Vehicles\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Vehicles/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Vehicles\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Vehicles/Show.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Vendors/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Vendors\\Form\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Vendors/Form.php
+
+		-
+			message: '#^Method App\\Livewire\\Vendors\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Vendors/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Vendors\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Vendors/Show.php
+
+		-
+			message: '#^Method App\\Livewire\\Warehouses\\Index\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Warehouses/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Warehouses\\Show\:\:render\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Warehouses/Show.php
+
+		-
+			message: '#^Method App\\Models\\Attendance\:\:employee\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attendance.php
+
+		-
+			message: '#^Method App\\Models\\Attendance\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attendance.php
+
+		-
+			message: '#^Method App\\Models\\BoqClause\:\:header\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqClause.php
+
+		-
+			message: '#^Method App\\Models\\BoqClause\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqClause.php
+
+		-
+			message: '#^Method App\\Models\\BoqHeader\:\:clauses\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/BoqHeader.php
+
+		-
+			message: '#^Method App\\Models\\BoqHeader\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqHeader.php
+
+		-
+			message: '#^Method App\\Models\\BoqItem\:\:clause\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqItem.php
+
+		-
+			message: '#^Method App\\Models\\BoqItem\:\:dsrMaterials\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqItem.php
+
+		-
+			message: '#^Method App\\Models\\BoqItem\:\:issueItems\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqItem.php
+
+		-
+			message: '#^Method App\\Models\\BoqItem\:\:purchaseOrderItems\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqItem.php
+
+		-
+			message: '#^Method App\\Models\\BoqItem\:\:requisitionItems\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqItem.php
+
+		-
+			message: '#^Method App\\Models\\BoqItem\:\:scopeForProject\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqItem.php
+
+		-
+			message: '#^Method App\\Models\\BoqItem\:\:scopeForProject\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/BoqItem.php
+
+		-
+			message: '#^Method App\\Models\\Contractor\:\:payments\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Contractor.php
+
+		-
+			message: '#^Method App\\Models\\DailySiteReport\:\:approvedBy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailySiteReport.php
+
+		-
+			message: '#^Method App\\Models\\DailySiteReport\:\:equipment\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailySiteReport.php
+
+		-
+			message: '#^Method App\\Models\\DailySiteReport\:\:manpower\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailySiteReport.php
+
+		-
+			message: '#^Method App\\Models\\DailySiteReport\:\:materials\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailySiteReport.php
+
+		-
+			message: '#^Method App\\Models\\DailySiteReport\:\:photos\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailySiteReport.php
+
+		-
+			message: '#^Method App\\Models\\DailySiteReport\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailySiteReport.php
+
+		-
+			message: '#^Method App\\Models\\DailySiteReport\:\:submittedBy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DailySiteReport.php
+
+		-
+			message: '#^Method App\\Models\\Document\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Document.php
+
+		-
+			message: '#^Method App\\Models\\Document\:\:sizeLabel\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Document.php
+
+		-
+			message: '#^Method App\\Models\\Document\:\:uploader\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Document.php
+
+		-
+			message: '#^Method App\\Models\\DsrEquipment\:\:dailySiteReport\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DsrEquipment.php
+
+		-
+			message: '#^Method App\\Models\\DsrEquipment\:\:equipment\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DsrEquipment.php
+
+		-
+			message: '#^Method App\\Models\\DsrManpower\:\:dailySiteReport\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DsrManpower.php
+
+		-
+			message: '#^Method App\\Models\\DsrMaterial\:\:boqItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DsrMaterial.php
+
+		-
+			message: '#^Method App\\Models\\DsrMaterial\:\:dailySiteReport\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DsrMaterial.php
+
+		-
+			message: '#^Method App\\Models\\DsrPhoto\:\:dailySiteReport\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DsrPhoto.php
+
+		-
+			message: '#^Method App\\Models\\DsrPhoto\:\:sizeLabel\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/DsrPhoto.php
+
+		-
+			message: '#^Method App\\Models\\Employee\:\:tasks\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\Task, \$this\(App\\Models\\Employee\)\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\ProjectJob, \$this\(App\\Models\\Employee\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Employee.php
+
+		-
+			message: '#^Method App\\Models\\Equipment\:\:currentProject\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Equipment.php
+
+		-
+			message: '#^Method App\\Models\\Equipment\:\:dsrEntries\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Equipment.php
+
+		-
+			message: '#^Method App\\Models\\Equipment\:\:usages\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Equipment.php
+
+		-
+			message: '#^Method App\\Models\\EquipmentUsage\:\:equipment\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/EquipmentUsage.php
+
+		-
+			message: '#^Method App\\Models\\EquipmentUsage\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/EquipmentUsage.php
+
+		-
+			message: '#^Method App\\Models\\MaterialIssue\:\:issuedTo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialIssue.php
+
+		-
+			message: '#^Method App\\Models\\MaterialIssue\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialIssue.php
+
+		-
+			message: '#^Method App\\Models\\MaterialIssue\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialIssue.php
+
+		-
+			message: '#^Method App\\Models\\MaterialIssue\:\:warehouse\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialIssue.php
+
+		-
+			message: '#^Method App\\Models\\MaterialIssueItem\:\:boqItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialIssueItem.php
+
+		-
+			message: '#^Method App\\Models\\MaterialIssueItem\:\:issue\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialIssueItem.php
+
+		-
+			message: '#^Method App\\Models\\MaterialReceipt\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialReceipt.php
+
+		-
+			message: '#^Method App\\Models\\MaterialReceipt\:\:purchaseOrder\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialReceipt.php
+
+		-
+			message: '#^Method App\\Models\\MaterialReceipt\:\:receivedBy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialReceipt.php
+
+		-
+			message: '#^Method App\\Models\\MaterialReceipt\:\:warehouse\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialReceipt.php
+
+		-
+			message: '#^Method App\\Models\\MaterialReceiptItem\:\:acceptedQty\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialReceiptItem.php
+
+		-
+			message: '#^Method App\\Models\\MaterialReceiptItem\:\:purchaseOrderItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialReceiptItem.php
+
+		-
+			message: '#^Method App\\Models\\MaterialReceiptItem\:\:receipt\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialReceiptItem.php
+
+		-
+			message: '#^Method App\\Models\\MaterialRequisition\:\:approvedBy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialRequisition.php
+
+		-
+			message: '#^Method App\\Models\\MaterialRequisition\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialRequisition.php
+
+		-
+			message: '#^Method App\\Models\\MaterialRequisition\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialRequisition.php
+
+		-
+			message: '#^Method App\\Models\\MaterialRequisition\:\:purchaseOrder\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialRequisition.php
+
+		-
+			message: '#^Method App\\Models\\MaterialRequisition\:\:raisedBy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialRequisition.php
+
+		-
+			message: '#^Method App\\Models\\MaterialRequisitionItem\:\:boqItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialRequisitionItem.php
+
+		-
+			message: '#^Method App\\Models\\MaterialRequisitionItem\:\:requisition\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MaterialRequisitionItem.php
+
+		-
+			message: '#^Cannot call method isBefore\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Milestone.php
+
+		-
+			message: '#^Method App\\Models\\Milestone\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Milestone.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\MilestoneStatus\:\:Completed will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Models/Milestone.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:boqHeaders\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:dailySiteReports\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:documents\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:employees\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:equipment\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:manager\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:materialIssues\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:runningBills\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:vehicles\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:warehouses\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\ProjectJob\:\:assignee\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectJob.php
+
+		-
+			message: '#^Method App\\Models\\ProjectJob\:\:balancePaisa\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectJob.php
+
+		-
+			message: '#^Method App\\Models\\ProjectJob\:\:milestone\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectJob.php
+
+		-
+			message: '#^Method App\\Models\\ProjectJob\:\:paidAmountPaisa\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectJob.php
+
+		-
+			message: '#^Method App\\Models\\ProjectJob\:\:tasks\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectJob.php
+
+		-
+			message: '#^Method App\\Models\\PurchaseOrder\:\:approvedBy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PurchaseOrder.php
+
+		-
+			message: '#^Method App\\Models\\PurchaseOrder\:\:receipts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PurchaseOrder.php
+
+		-
+			message: '#^Method App\\Models\\PurchaseOrder\:\:requisition\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PurchaseOrder.php
+
+		-
+			message: '#^Method App\\Models\\PurchaseOrderItem\:\:boqItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PurchaseOrderItem.php
+
+		-
+			message: '#^Method App\\Models\\PurchaseOrderItem\:\:purchaseOrder\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PurchaseOrderItem.php
+
+		-
+			message: '#^Method App\\Models\\PurchaseOrderItem\:\:receiptItems\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PurchaseOrderItem.php
+
+		-
+			message: '#^Method App\\Models\\RunningBill\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RunningBill.php
+
+		-
+			message: '#^Method App\\Models\\StockLedger\:\:warehouse\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/StockLedger.php
+
+		-
+			message: '#^Method App\\Models\\Task\:\:getDueDateAttribute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Task.php
+
+		-
+			message: '#^Method App\\Models\\Task\:\:projectJob\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Task.php
+
+		-
+			message: '#^Method App\\Models\\Task\:\:setDueDateAttribute\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Task.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:employee\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\Vehicle\:\:currentProject\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Vehicle.php
+
+		-
+			message: '#^Method App\\Models\\Warehouse\:\:issues\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Warehouse.php
+
+		-
+			message: '#^Method App\\Models\\Warehouse\:\:ledgerEntries\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Warehouse.php
+
+		-
+			message: '#^Method App\\Models\\Warehouse\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Warehouse.php
+
+		-
+			message: '#^Method App\\Models\\Warehouse\:\:receipts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Warehouse.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\BoqItem\:\:\$project_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ContractorPayment\:\:\$paid_paisa\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ProjectJob\:\:\$agreed_paisa\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ProjectJob\:\:\$done\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ProjectJob\:\:\$job_count\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ProjectJob\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Method App\\Services\\CalculationService\:\:filteredPayments\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Method App\\Services\\CalculationService\:\:milestoneProgressReport\(\) should return array\{projects\: Illuminate\\Support\\Collection\<int, App\\Models\\Project\>, project\: App\\Models\\Project\|null, rows\: Illuminate\\Support\\Collection\<int, array\<string, mixed\>\>, totals\: array\<string, float\|int\>\} but returns array\{projects\: Illuminate\\Support\\Collection\<int, App\\Models\\Project\>, project\: App\\Models\\Project\|null, rows\: Illuminate\\Support\\Collection\<int, array\{project_id\: int, code\: string, name\: string, milestone_count\: int, status_counts\: non\-empty\-array\<string, int\>, progress_pct\: float, tasks_done\: int, tasks_total\: int, \.\.\.\}\>, totals\: array\{project_count\: int\<0, max\>, milestone_count\: int, completed_count\: int, tasks_done\: int, tasks_total\: int\}\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Method App\\Services\\CalculationService\:\:projectPaymentSummary\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Method App\\Services\\CalculationService\:\:reconciliationIssueCounts\(\) should return array\<int, array\{shortage\: int, over_consumed\: int\}\> but returns array\<int, non\-empty\-array\{shortage\?\: int, over_consumed\?\: int\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Offset ''over_consumed'' might not exist on non\-empty\-array\{shortage\?\: int, over_consumed\?\: int\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Offset ''shortage'' might not exist on non\-empty\-array\{shortage\?\: int, over_consumed\?\: int\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^PHPDoc tag @return with type Illuminate\\Support\\Collection\<int, App\\Models\\ContractorPayment\> is not subtype of native type Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>agreed_paisa" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>boq_value_paisa" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>contractor_count" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>done" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>executed_value_paisa" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>job_count" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>paid_paisa" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>project_count" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/CalculationService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>total" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/CalculationService.php

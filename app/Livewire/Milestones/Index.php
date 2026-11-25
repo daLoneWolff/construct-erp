@@ -5,10 +5,10 @@ namespace App\Livewire\Milestones;
 use App\Enums\JobStatus;
 use App\Enums\MilestoneStatus;
 use App\Models\Contractor;
+use App\Models\ContractorPayment;
 use App\Models\Employee;
 use App\Models\Milestone;
 use App\Models\Project;
-use App\Models\ProjectJob;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -173,7 +173,7 @@ class Index extends Component
         $this->authorize('manage');
         $milestone = $this->project->milestones()->findOrFail($milestoneId);
 
-        $hasPayments = \App\Models\ContractorPayment::query()
+        $hasPayments = ContractorPayment::query()
             ->whereIn('project_job_id', $milestone->tasks()->select('id'))
             ->exists();
 

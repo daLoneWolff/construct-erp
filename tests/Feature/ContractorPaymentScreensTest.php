@@ -16,7 +16,6 @@ use App\Models\ContractorPayment;
 use App\Models\Milestone;
 use App\Models\Project;
 use App\Models\ProjectJob;
-use App\Models\Task;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;

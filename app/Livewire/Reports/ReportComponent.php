@@ -3,6 +3,7 @@
 namespace App\Livewire\Reports;
 
 use App\Services\CalculationService;
+use Carbon\CarbonInterface;
 use Livewire\Component;
 
 abstract class ReportComponent extends Component
@@ -24,7 +25,7 @@ abstract class ReportComponent extends Component
         return $this->projectId === '' ? null : (int) $this->projectId;
     }
 
-    /** @return array{0: \Carbon\CarbonInterface, 1: \Carbon\CarbonInterface} */
+    /** @return array{0: CarbonInterface, 1: CarbonInterface} */
     protected function dateRange(CalculationService $calc): array
     {
         return $calc->reportDateRange($this->from, $this->to);

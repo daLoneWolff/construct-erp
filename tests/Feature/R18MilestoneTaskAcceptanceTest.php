@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use App\Enums\CompanyRole;
 use App\Enums\JobStatus;
