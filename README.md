@@ -1,4 +1,4 @@
-# Himalaya Construction ERP — local demo + multi-company target
+# Construction ERP — local demo + multi-company target
 
 A Nepal-focused construction ERP (Laravel 13 + Livewire 4.1 + Flux UI 2 +
 Tailwind CSS 4, PostgreSQL 16). Its primary flow is
