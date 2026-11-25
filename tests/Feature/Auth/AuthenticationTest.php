@@ -1,0 +1,111 @@
+<?php
+
+namespace Tests\Feature\Auth;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Fortify\Features;
+use Tests\TestCase;
+
+class AuthenticationTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_login_screen_can_be_rendered(): void
+    {
+        $response = $this->get(route('login'));
+
+        $response->assertOk();
+    }
+
+    public function test_login_page_places_google_button_after_the_login_button(): void
+    {
+        $html = $this->get(route('login'))->assertOk()->getContent();
+
+        $loginButton = strpos($html, 'data-test="login-button"');
+        $googleButton = strpos($html, 'Continue with Google');
+
+        $this->assertNotFalse($loginButton);
+        $this->assertNotFalse($googleButton);
+        $this->assertLessThan($googleButton, $loginButton);
+    }
+
+    public function test_login_hides_local_demo_credentials_when_demo_mode_is_disabled(): void
+    {
+        config()->set('demo.reset_enabled', false);
+
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertDontSee('admin@himalaya.test');
+    }
+
+    public function test_login_shows_local_demo_credentials_in_demo_mode(): void
+    {
+        config()->set('demo.reset_enabled', true);
+
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('admin@himalaya.test');
+    }
+
+    public function test_users_can_authenticate_using_the_login_screen(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('companies.create', absolute: false));
+
+        $this->assertAuthenticated();
+    }
+
+    public function test_users_can_not_authenticate_with_invalid_password(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ]);
+
+        $response->assertSessionHasErrorsIn('email');
+
+        $this->assertGuest();
+    }
+
+    public function test_users_with_two_factor_enabled_are_redirected_to_two_factor_challenge(): void
+    {
+        $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
+
+        Features::twoFactorAuthentication([
+            'confirm' => true,
+            'confirmPassword' => true,
+        ]);
+
+        $user = User::factory()->withTwoFactor()->create();
+
+        $response = $this->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect(route('two-factor.login'));
+        $this->assertGuest();
+    }
+
+    public function test_users_can_logout(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post(route('logout'));
+
+        $response->assertRedirect(config('fortify.home'));
+
+        $this->assertGuest();
+    }
+}
