@@ -26,17 +26,9 @@ RUN apt-get update \
     libzip-dev \
     libonig-dev \
   && docker-php-ext-configure intl \
-  && docker-php-ext-install -j"$(nproc)" \
-    bcmath \
-    ctype \
-    fileinfo \
-    intl \
-    mbstring \
-    pdo_pgsql \
-    zip \
-  && (docker-php-ext-install -j"$(nproc)" tokenizer || php -m | grep -q '^tokenizer$') \
-  && (docker-php-ext-install -j"$(nproc)" opcache || php -m | grep -qi '^Zend OPcache$') \
-  && (docker-php-ext-install -j"$(nproc)" dom xml || (php -m | grep -q '^dom$' && php -m | grep -q '^xml$')) \
+  && for ext in bcmath ctype fileinfo intl mbstring pdo_pgsql zip tokenizer opcache dom xml; do \
+       docker-php-ext-install -j"$(nproc)" "$ext" || php -m | grep -qi "$ext" || exit 1; \
+     done \
   && apt-get purge -y --auto-remove $PHPIZE_DEPS libicu-dev libpq-dev libxml2-dev libzip-dev libonig-dev \
   && rm -rf /var/lib/apt/lists/*
 
