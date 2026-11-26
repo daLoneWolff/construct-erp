@@ -54,7 +54,13 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setToStringFormat('d/m/Y');
         CarbonImmutable::setToStringFormat('d/m/Y');
 
-        if (str_starts_with((string) config('app.url'), 'https://')) {
+        $forwardedProto = request()->server('HTTP_X_FORWARDED_PROTO');
+
+        if (str_starts_with((string) config('app.url'), 'https://')
+            || request()->isSecure()
+            || $forwardedProto === 'https'
+            || (is_string($forwardedProto) && str_contains($forwardedProto, 'https'))
+        ) {
             URL::forceScheme('https');
         }
 
