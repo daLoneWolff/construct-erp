@@ -35,10 +35,13 @@ class Show extends Component
             $calc->paymentFilterDate($this->to)
         );
 
+        /** @var \Illuminate\Support\Collection<int, array<string, mixed>> $ledgerJobs */
+        $ledgerJobs = $ledger['jobs'];
+
         return view('livewire.contractors.show', [
             'ledger' => $ledger,
             'projects' => Project::query()->orderBy('code')->get(),
-            'hasPayableTasks' => array_any((array) $ledger['jobs'], fn (array $row): bool => (int) $row['balance_paisa'] > 0),
+            'hasPayableTasks' => $ledgerJobs->contains(fn (array $row): bool => (int) ($row['balance_paisa'] ?? 0) > 0),
         ]);
     }
 }
