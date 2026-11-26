@@ -57,6 +57,7 @@ FROM node:22-alpine AS node-build
 WORKDIR /app
 COPY package.json package-lock.json .npmrc ./
 RUN npm ci --audit false
+COPY --from=composer-deps /var/www/html/vendor ./vendor
 COPY resources ./resources
 COPY public ./public
 COPY vite.config.js ./
