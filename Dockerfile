@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     git \
     icu-libs \
     libpq \
+    lexbor \
     libxml2 \
     libzip \
     nginx \
@@ -21,6 +22,7 @@ RUN apk add --no-cache \
     $PHPIZE_DEPS \
     icu-dev \
     libpq-dev \
+    lexbor-dev \
     libxml2-dev \
     libzip-dev \
     oniguruma-dev \
