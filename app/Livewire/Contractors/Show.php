@@ -5,6 +5,7 @@ namespace App\Livewire\Contractors;
 use App\Models\Contractor;
 use App\Models\Project;
 use App\Services\CalculationService;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -35,7 +36,7 @@ class Show extends Component
             $calc->paymentFilterDate($this->to)
         );
 
-        /** @var \Illuminate\Support\Collection<int, array<string, mixed>> $ledgerJobs */
+        /** @var Collection<int, array<string, mixed>> $ledgerJobs */
         $ledgerJobs = $ledger['jobs'];
 
         return view('livewire.contractors.show', [
