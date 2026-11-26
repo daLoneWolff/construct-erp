@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     git \
     icu-libs \
     libpq \
+    libxml2 \
     libzip \
     nginx \
     oniguruma \
@@ -20,6 +21,7 @@ RUN apk add --no-cache \
     $PHPIZE_DEPS \
     icu-dev \
     libpq-dev \
+    libxml2-dev \
     libzip-dev \
     oniguruma-dev \
   && docker-php-ext-configure intl \
