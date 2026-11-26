@@ -4,7 +4,7 @@ set -eu
 PORT="${PORT:-8080}"
 export PORT
 
-envsubst '${PORT}' < /etc/nginx/http.d/default.conf.template > /etc/nginx/http.d/default.conf
+envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
 php artisan package:discover --ansi --no-interaction || true
 

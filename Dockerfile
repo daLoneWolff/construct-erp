@@ -1,31 +1,30 @@
 # syntax=docker/dockerfile:1
 
-ARG PHP_VERSION=8.5-fpm-alpine
+ARG PHP_VERSION=8.5-fpm-bookworm
 
 FROM php:${PHP_VERSION} AS php-base
 
-RUN apk add --no-cache \
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
     bash \
     curl \
-    gettext \
+    gettext-base \
     git \
-    icu-libs \
-    libpq \
-    lexbor \
+    libicu72 \
+    libpq5 \
     libxml2 \
-    libzip \
+    libzip4 \
+    libonig5 \
     nginx \
-    oniguruma \
     supervisor \
     unzip \
-  && apk add --no-cache --virtual .build-deps \
+  && apt-get install -y --no-install-recommends \
     $PHPIZE_DEPS \
-    icu-dev \
+    libicu-dev \
     libpq-dev \
-    lexbor-dev \
     libxml2-dev \
     libzip-dev \
-    oniguruma-dev \
+    libonig-dev \
   && docker-php-ext-configure intl \
   && docker-php-ext-install -j"$(nproc)" \
     bcmath \
@@ -39,7 +38,8 @@ RUN apk add --no-cache \
     tokenizer \
     xml \
     zip \
-  && apk del .build-deps
+  && apt-get purge -y --auto-remove $PHPIZE_DEPS libicu-dev libpq-dev libxml2-dev libzip-dev libonig-dev \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -89,12 +89,12 @@ RUN mkdir -p \
   && php artisan package:discover --ansi --no-interaction \
   && rm -f .env
 
-COPY docker/nginx/default.conf.template /etc/nginx/http.d/default.conf.template
+COPY docker/nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
 COPY docker/supervisord.conf /etc/supervisord.conf
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN chmod +x /usr/local/bin/entrypoint.sh \
-  && rm -f /etc/nginx/http.d/default.conf \
+  && rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
