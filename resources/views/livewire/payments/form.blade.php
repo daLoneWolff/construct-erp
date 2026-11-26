@@ -5,6 +5,10 @@
                 <flux:link :href="route('payments.show', $payment)" wire:navigate class="text-sm">
                     {{ __('Back to payment') }}
                 </flux:link>
+            @elseif ($contextContractor)
+                <flux:link :href="route('contractors.show', $contextContractor)" wire:navigate class="text-sm">
+                    {{ __('Back to contractor') }}
+                </flux:link>
             @elseif ($selectedJob)
                 <flux:link :href="route('jobs.show', $selectedJob)" wire:navigate class="text-sm">
                     {{ __('Back to task') }}
@@ -20,20 +24,26 @@
 
     <form wire:submit="save" class="space-y-5">
         <x-panel title="{{ __('Payment details') }}">
-            @if ($isEdit)
+                        @if ($isEdit)
                 <flux:input
                     :label="__('Task')"
-                    :value="$selectedJob?->project?->code.' · '.$selectedJob?->title"
+                    :value="$selectedJob?->project?->code.' — '.$selectedJob?->title"
                     readonly
                 />
+            @elseif ($contextContractor && $jobs->isEmpty())
+                <flux:callout variant="warning" icon="exclamation-triangle">
+                    <flux:callout.text>
+                        {{ __('This contractor has no tasks with remaining balance to record a payment against.') }}
+                    </flux:callout.text>
+                </flux:callout>
             @else
                 <flux:select wire:model.live="jobId" :label="__('Task')" required>
                     <flux:select.option value="">{{ __('Select task') }}</flux:select.option>
                     @foreach ($jobs as $option)
                         <flux:select.option :value="$option->id">
-                            {{ $option->project?->code }} · {{ $option->title }}
+                            {{ $option->project?->code }} — {{ $option->title }}
                             @if ($option->contractor)
-                                · {{ $option->contractor->name }}
+                                — {{ $option->contractor->name }}
                             @endif
                         </flux:select.option>
                     @endforeach
@@ -75,9 +85,9 @@
             <x-stat-card label="Remaining before payment" :paisa="$remainingPaisa" tone="amber" />
             @if ($selectedJob)
                 <x-stat-card
-                    label="Task balance"
-                    :paisa="$selectedJob->balance_paisa"
-                    hint="All-time agreed minus paid"
+                    label="Remaining after this payment"
+                    :paisa="$remainingAfterPaisa"
+                    hint="Before payment minus amount entered"
                 />
             @endif
         </div>
@@ -89,7 +99,11 @@
         </flux:callout>
 
         <x-form-actions>
-            <flux:button variant="ghost" :href="route('payments.index')" wire:navigate>
+            <flux:button
+                variant="ghost"
+                :href="$contextContractor ? route('contractors.show', $contextContractor) : route('payments.index')"
+                wire:navigate
+            >
                 {{ __('Cancel') }}
             </flux:button>
             <flux:button type="submit" variant="primary" icon="check">

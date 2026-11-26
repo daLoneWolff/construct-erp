@@ -148,6 +148,7 @@ Route::middleware([
     Route::get('contractors/create', ContractorForm::class)->name('contractors.create');
     Route::get('contractors/{contractor}/edit', ContractorForm::class)->name('contractors.edit');
     Route::get('contractors/{contractor}', ContractorShow::class)->name('contractors.show');
+    Route::get('contractors/{contractor}/payments/create', PaymentForm::class)->name('contractors.payments.create');
 
     Route::get('jobs/{job}/edit', ProjectJobForm::class)->name('jobs.edit');
     Route::get('jobs/{job}/payments/create', PaymentForm::class)->name('jobs.payments.create');

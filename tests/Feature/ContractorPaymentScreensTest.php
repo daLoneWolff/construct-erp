@@ -400,3 +400,72 @@ test('contractor ledger filters do not change the all-time balances', function (
         ->assertSee('CTP-2026-9003')
         ->assertDontSee('CTP-2026-9004');
 });
+
+test('contractor can record a payment from the contractor page for a task with remaining balance', function () {
+    $admin = contractorScreenAdmin();
+    $project = contractorScreenProject($admin->id, 'PRJ-CPAY-1');
+    $contractor = contractorScreenContractor('Mina Concrete Works', '556677889');
+    $payableJob = contractorScreenJob($project, $contractor, 100000, 'Foundation work');
+    $paidJob = contractorScreenJob($project, $contractor, 50000, 'Fully paid work');
+    contractorScreenPayment($paidJob, $contractor, 'CTP-2026-9101', 50000, '2026-10-01');
+
+    $this->actingAs($admin)
+        ->get(route('contractors.show', $contractor))
+        ->assertOk()
+        ->assertSee('Record Payment');
+
+    $this->actingAs($admin)
+        ->get(route('contractors.payments.create', $contractor))
+        ->assertOk()
+        ->assertSee('Record payment')
+        ->assertSee('Foundation work')
+        ->assertDontSee('Fully paid work');
+
+    Livewire::actingAs($admin)
+        ->test(PaymentForm::class, ['contractor' => $contractor])
+        ->assertSee('Foundation work')
+        ->assertDontSee('Fully paid work')
+        ->set('jobId', (string) $payableJob->id)
+        ->set('amount', '400.00')
+        ->set('paidOn', '2026-10-10')
+        ->set('method', 'cash')
+        ->set('referenceNo', 'CASH-CPAY-1')
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertRedirect(route('payments.show', ContractorPayment::query()->latest('id')->firstOrFail()));
+
+    $payment = ContractorPayment::query()->latest('id')->firstOrFail();
+
+    expect($payment->contractor_id)->toBe($contractor->id)
+        ->and($payment->project_job_id)->toBe($payableJob->id)
+        ->and($payment->amount_paisa)->toBe(40000)
+        ->and($payableJob->refresh()->balance_paisa)->toBe(60000)
+        ->and($paidJob->refresh()->balance_paisa)->toBe(0);
+});
+
+test('contractor payment form rejects overpayment and tasks from another contractor', function () {
+    $admin = contractorScreenAdmin();
+    $project = contractorScreenProject($admin->id, 'PRJ-CPAY-2');
+    $contractor = contractorScreenContractor('Hari Masonry', '667788990');
+    $otherContractor = contractorScreenContractor('Gita Finishes', '778899001');
+    $job = contractorScreenJob($project, $contractor, 100000, 'Masonry wall');
+    $otherJob = contractorScreenJob($project, $otherContractor, 100000, 'Painting work');
+
+    Livewire::actingAs($admin)
+        ->test(PaymentForm::class, ['contractor' => $contractor])
+        ->set('jobId', (string) $job->id)
+        ->set('amount', '1200.00')
+        ->set('paidOn', '2026-10-11')
+        ->call('save')
+        ->assertHasErrors('amount');
+
+    Livewire::actingAs($admin)
+        ->test(PaymentForm::class, ['contractor' => $contractor])
+        ->set('jobId', (string) $otherJob->id)
+        ->set('amount', '100.00')
+        ->set('paidOn', '2026-10-11')
+        ->call('save')
+        ->assertHasErrors('jobId');
+
+    expect(ContractorPayment::query()->count())->toBe(0);
+});

@@ -99,7 +99,7 @@
                         @forelse ($projectRows as $row)
                             <flux:table.row :key="$row['project']->id">
                                 <flux:table.cell>
-                                    <flux:link :href="route('projects.payments', $row['project'])" wire:navigate class="font-medium">
+                                    <flux:link :href="route('projects.show', $row['project'])" wire:navigate class="font-medium">
                                         {{ $row['project']->name }}
                                     </flux:link>
                                     <flux:text class="text-xs text-zinc-500">

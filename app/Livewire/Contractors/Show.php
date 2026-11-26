@@ -28,14 +28,17 @@ class Show extends Component
     {
         $projectId = $this->projectId === '' ? null : (int) $this->projectId;
 
+        $ledger = $calc->contractorLedger(
+            $this->contractor,
+            $projectId,
+            $calc->paymentFilterDate($this->from),
+            $calc->paymentFilterDate($this->to)
+        );
+
         return view('livewire.contractors.show', [
-            'ledger' => $calc->contractorLedger(
-                $this->contractor,
-                $projectId,
-                $calc->paymentFilterDate($this->from),
-                $calc->paymentFilterDate($this->to)
-            ),
+            'ledger' => $ledger,
             'projects' => Project::query()->orderBy('code')->get(),
+            'hasPayableTasks' => collect($ledger['jobs'])->contains(fn (array $row): bool => $row['balance_paisa'] > 0),
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Livewire\Payments;
 
 use App\Enums\PaymentMethod;
+use App\Models\Contractor;
 use App\Models\ContractorPayment;
 use App\Models\ProjectJob;
 use App\Services\CalculationService;
@@ -17,6 +18,10 @@ class Form extends Component
 {
     public ?ContractorPayment $payment = null;
 
+    public ?Contractor $contextContractor = null;
+
+    public string $projectFilter = '';
+
     public string $jobId = '';
 
     public string $amount = '';
@@ -29,7 +34,7 @@ class Form extends Component
 
     public string $note = '';
 
-    public function mount(?ProjectJob $job = null, ?ContractorPayment $payment = null): void
+    public function mount(?ProjectJob $job = null, ?ContractorPayment $payment = null, ?Contractor $contractor = null): void
     {
         $this->authorize('manage');
 
@@ -45,13 +50,24 @@ class Form extends Component
             return;
         }
 
-        if ($job === null) {
-            abort(404);
+        if ($job !== null) {
+            $this->jobId = (string) $job->id;
+            $this->paidOn = today()->toDateString();
+            $this->method = PaymentMethod::Cash->value;
+
+            return;
         }
 
-        $this->jobId = (string) $job->id;
-        $this->paidOn = today()->toDateString();
-        $this->method = PaymentMethod::Cash->value;
+        if ($contractor !== null) {
+            $this->contextContractor = $contractor;
+            $this->projectFilter = (string) request()->query('project', '');
+            $this->paidOn = today()->toDateString();
+            $this->method = PaymentMethod::Cash->value;
+
+            return;
+        }
+
+        abort(404);
     }
 
     public function save(): void
@@ -73,6 +89,12 @@ class Form extends Component
 
         if ($amountPaisa <= 0) {
             $this->addError('amount', __('Enter a payment amount greater than zero.'));
+
+            return;
+        }
+
+        if ($this->contextContractor !== null && (int) $job->contractor_id !== (int) $this->contextContractor->id) {
+            $this->addError('jobId', __('Select a task assigned to this contractor.'));
 
             return;
         }
@@ -120,18 +142,47 @@ class Form extends Component
             ?? ProjectJob::query()->with(['project', 'contractor'])->find((int) $this->jobId);
         $paidOn = $calc->paymentFilterDate($this->paidOn) ?? today();
 
+        $jobs = collect();
+
+        if ($this->payment === null) {
+            $jobsQuery = ProjectJob::query()
+                ->with(['project', 'contractor'])
+                ->orderBy('project_id')
+                ->orderBy('title');
+
+            if ($this->contextContractor !== null) {
+                $jobsQuery->where('contractor_id', $this->contextContractor->id);
+
+                if ($this->projectFilter !== '') {
+                    $jobsQuery->where('project_id', (int) $this->projectFilter);
+                }
+            }
+
+            $jobs = $jobsQuery->get();
+
+            if ($this->contextContractor !== null) {
+                $jobs = $jobs
+                    ->filter(fn (ProjectJob $job): bool => $calc->remainingPaymentCapacityPaisa($job) > 0)
+                    ->values();
+            }
+        }
+
+        $remainingPaisa = $selectedJob
+            ? $calc->remainingPaymentCapacityPaisa($selectedJob, $this->payment?->id)
+            : 0;
+        $enteredPaisa = Npr::toPaisa($this->amount);
+        $remainingAfterPaisa = max(0, $remainingPaisa - $enteredPaisa);
+
         return view('livewire.payments.form', [
             'isEdit' => $this->payment !== null,
-            'jobs' => $this->payment === null
-                ? ProjectJob::query()->with(['project', 'contractor'])->orderBy('project_id')->orderBy('title')->get()
-                : collect(),
+            'jobs' => $jobs,
             'selectedJob' => $selectedJob,
-            'payee' => $this->payment?->contractor ?? $selectedJob?->contractor,
-            'remainingPaisa' => $selectedJob
-                ? $calc->remainingPaymentCapacityPaisa($selectedJob, $this->payment?->id)
-                : 0,
+            'payee' => $this->payment?->contractor ?? $selectedJob?->contractor ?? $this->contextContractor,
+            'remainingPaisa' => $remainingPaisa,
+            'remainingAfterPaisa' => $remainingAfterPaisa,
             'methods' => PaymentMethod::cases(),
             'paymentNo' => $this->payment?->payment_no ?? $calc->nextContractorPaymentNo($paidOn),
+            'contextContractor' => $this->contextContractor,
         ]);
     }
 }

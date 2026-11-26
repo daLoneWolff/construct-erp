@@ -69,6 +69,19 @@
             </flux:select>
             <flux:input wire:model.live="from" type="date" :label="__('Payment date from')" />
             <flux:input wire:model.live="to" type="date" :label="__('Payment date to')" />
+
+            @if ($hasPayableTasks)
+                <x-slot:actions>
+                    <flux:button
+                        variant="primary"
+                        icon="banknotes"
+                        :href="route('contractors.payments.create', array_filter(['contractor' => $contractor, 'project' => $projectId], fn ($value) => filled($value)))"
+                        wire:navigate
+                    >
+                        {{ __('Record Payment') }}
+                    </flux:button>
+                </x-slot:actions>
+            @endif
         </x-filter-bar>
 
         <div class="px-5 pb-4">
