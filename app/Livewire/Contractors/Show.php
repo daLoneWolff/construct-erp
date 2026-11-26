@@ -38,7 +38,7 @@ class Show extends Component
         return view('livewire.contractors.show', [
             'ledger' => $ledger,
             'projects' => Project::query()->orderBy('code')->get(),
-            'hasPayableTasks' => collect($ledger['jobs'])->contains(fn (array $row): bool => $row['balance_paisa'] > 0),
+            'hasPayableTasks' => array_any((array) $ledger['jobs'], fn (array $row): bool => (int) $row['balance_paisa'] > 0),
         ]);
     }
 }
