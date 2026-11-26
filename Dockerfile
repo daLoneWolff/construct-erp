@@ -32,10 +32,10 @@ RUN apt-get update \
     fileinfo \
     intl \
     mbstring \
-    opcache \
     pdo_pgsql \
     tokenizer \
     zip \
+  && (docker-php-ext-install -j"$(nproc)" opcache || php -m | grep -qi '^Zend OPcache$') \
   && (docker-php-ext-install -j"$(nproc)" dom xml || (php -m | grep -q '^dom$' && php -m | grep -q '^xml$')) \
   && apt-get purge -y --auto-remove $PHPIZE_DEPS libicu-dev libpq-dev libxml2-dev libzip-dev libonig-dev \
   && rm -rf /var/lib/apt/lists/*
