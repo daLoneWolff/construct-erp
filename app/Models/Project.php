@@ -51,6 +51,12 @@ class Project extends Model
         return $this->belongsTo(User::class, 'project_manager_id');
     }
 
+    /** @return HasMany<ProjectPartner, $this> */
+    public function partners(): HasMany
+    {
+        return $this->hasMany(ProjectPartner::class)->orderBy('id');
+    }
+
     public function employees(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class, 'project_employee')
@@ -85,6 +91,11 @@ class Project extends Model
     public function contractorPayments(): HasMany
     {
         return $this->hasMany(ContractorPayment::class);
+    }
+
+    public function clientReceipts(): HasMany
+    {
+        return $this->hasMany(ClientReceipt::class);
     }
 
     public function dailySiteReports(): HasMany

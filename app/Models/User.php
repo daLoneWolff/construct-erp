@@ -59,6 +59,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Employee::class);
     }
 
+    /** @return HasOne<Contractor, $this> */
+    public function contractor(): HasOne
+    {
+        return $this->hasOne(Contractor::class);
+    }
+
+    public function isContractor(): bool
+    {
+        return $this->role === Role::Contractor;
+    }
+
     /** @return BelongsTo<Company, $this> */
     public function currentCompany(): BelongsTo
     {

@@ -14,8 +14,12 @@
             </div>
 
             <div class="mt-4 grid gap-4 sm:grid-cols-3">
+                <flux:input wire:model="email" type="email" :label="__('Email')" placeholder="name@example.com" />
                 <flux:input wire:model="designation" :label="__('Designation')" />
-                <flux:input wire:model="trade" :label="__('Trade')" placeholder="Mason, Electrician…" />
+                <flux:input wire:model="trade" :label="__('Trade')" placeholder="Mason, Electrician\u2026" />
+            </div>
+
+            <div class="mt-4 grid gap-4 sm:grid-cols-3">
                 <flux:input wire:model="department" :label="__('Department')" />
             </div>
         </x-panel>
@@ -47,7 +51,7 @@
             </div>
         </x-panel>
 
-        <x-panel title="{{ __('SSF & PAN') }}">
+        <x-panel title="{{ __('SSF and PAN') }}">
             <div class="grid gap-4 sm:grid-cols-3">
                 <flux:input wire:model="pan" :label="__('PAN')" maxlength="9" placeholder="601234567" />
                 <flux:input wire:model="ssf_no" :label="__('SSF number')" placeholder="SSF-000027" />

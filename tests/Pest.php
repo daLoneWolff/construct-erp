@@ -61,7 +61,7 @@ function tenantCompany(array $attributes = []): Company
     }
 
     $company = Company::create(array_merge([
-        'name' => 'Himalaya Builders Pvt. Ltd.',
+        'name' => 'Ranta Infrastructure Pvt.Ltd',
         'pan' => '601234567',
         'vat' => '601234567',
         'address' => 'Ward 12, Lalitpur',

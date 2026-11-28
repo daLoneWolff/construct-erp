@@ -22,7 +22,7 @@ class Show extends Component
 
     public function mount(Contractor $contractor): void
     {
-        $this->contractor = $contractor;
+        $this->contractor = $contractor->loadMissing('user');
     }
 
     public function render(CalculationService $calc)

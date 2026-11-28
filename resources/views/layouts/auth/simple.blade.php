@@ -7,8 +7,8 @@
         <div class="flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
             <div class="w-full max-w-lg space-y-6">
                 <a href="{{ route('login') }}" class="flex flex-col items-center gap-3 font-medium" wire:navigate>
-                    <span class="flex size-11 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm dark:bg-brand-400 dark:text-zinc-950">
-                        <x-app-logo-icon class="size-6 fill-current" />
+                    <span class="flex size-11 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 ring-zinc-200 shadow-sm dark:bg-zinc-900 dark:ring-zinc-700">
+                        <x-app-logo-icon class="size-full" />
                     </span>
                     <span class="text-sm font-semibold tracking-tight text-zinc-700 dark:text-zinc-200">
                         {{ config('app.name', 'Laravel') }}

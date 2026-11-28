@@ -24,18 +24,6 @@ class RegistrationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_register_page_places_google_button_after_the_register_button(): void
-    {
-        $html = $this->get(route('register'))->assertOk()->getContent();
-
-        $registerButton = strpos($html, 'data-test="register-button"');
-        $googleButton = strpos($html, 'Continue with Google');
-
-        $this->assertNotFalse($registerButton);
-        $this->assertNotFalse($googleButton);
-        $this->assertLessThan($googleButton, $registerButton);
-    }
-
     public function test_new_users_can_register(): void
     {
         $response = $this->post(route('register.store'), [

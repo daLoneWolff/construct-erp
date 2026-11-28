@@ -15,7 +15,7 @@
             <flux:input
                 wire:model.live.debounce.300ms="search"
                 :label="__('Search')"
-                :placeholder="__('Name, phone or PAN')"
+                :placeholder="__('Name, phone, email or PAN')"
                 icon="magnifying-glass"
                 class="w-full sm:max-w-sm"
             />
@@ -26,6 +26,7 @@
                 <flux:table.columns>
                     <flux:table.column>{{ __('Contractor') }}</flux:table.column>
                     <flux:table.column>{{ __('Contact') }}</flux:table.column>
+                    <flux:table.column>{{ __('Email') }}</flux:table.column>
                     <flux:table.column>{{ __('PAN') }}</flux:table.column>
                     <flux:table.column align="end" class="text-right">{{ __('Tasks') }}</flux:table.column>
                     <flux:table.column align="end" class="text-right">{{ __('Agreed') }}</flux:table.column>
@@ -53,6 +54,7 @@
                                     <flux:text class="text-xs text-zinc-500">{{ $contractor->address }}</flux:text>
                                 @endif
                             </flux:table.cell>
+                            <flux:table.cell class="text-xs">{{ $contractor->email ?: '—' }}</flux:table.cell>
                             <flux:table.cell class="font-mono text-xs">{{ $contractor->pan ?: '—' }}</flux:table.cell>
                             <flux:table.cell class="text-right tabular-nums">{{ $row['job_count'] }}</flux:table.cell>
                             <flux:table.cell class="text-right tabular-nums"><x-money :paisa="$row['agreed_paisa']" /></flux:table.cell>
@@ -86,7 +88,7 @@
                         </flux:table.row>
                     @empty
                         <flux:table.row>
-                            <flux:table.cell colspan="9">
+                            <flux:table.cell colspan="10">
                                 <x-empty-state
                                     variant="table"
                                     title="{{ __('No contractors found') }}"

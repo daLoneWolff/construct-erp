@@ -78,6 +78,30 @@ class Show extends Component
         session()->flash('success', __('Running bill certified.'));
     }
 
+    public function markPaid(): void
+    {
+        $this->authorize('certify');
+
+        $calc = app(CalculationService::class);
+
+        if ($this->bill->status !== RunningBillStatus::Certified) {
+            $this->addError('bill', __('Only certified bills can be marked as paid.'));
+
+            return;
+        }
+
+        if ($calc->runningBillRemainingReceivablePaisa($this->bill) > 0) {
+            $this->addError('bill', __('Record client receipts covering the net payable before marking this bill as paid.'));
+
+            return;
+        }
+
+        $this->bill->update(['status' => RunningBillStatus::Paid]);
+        $this->bill->refresh();
+
+        session()->flash('success', __('Running bill marked as paid.'));
+    }
+
     public function render(CalculationService $calc)
     {
         $project = $this->bill->project;
@@ -85,6 +109,8 @@ class Show extends Component
             $this->bill->work_certified_paisa,
             $this->bill->advance_adjusted_paisa
         );
+        $receivedPaisa = $calc->runningBillReceivedPaisa($this->bill);
+        $remainingReceivablePaisa = $calc->runningBillRemainingReceivablePaisa($this->bill);
 
         return view('livewire.running-bills.show', [
             'project' => $project,
@@ -92,6 +118,9 @@ class Show extends Component
             'workCertifiedPaisa' => $this->bill->work_certified_paisa,
             'amountInWords' => NumberToWords::rupees($totals['net_payable_paisa']),
             'canCertify' => $this->bill->status === RunningBillStatus::Draft,
+            'receivedPaisa' => $receivedPaisa,
+            'remainingReceivablePaisa' => $remainingReceivablePaisa,
+            'canMarkPaid' => $this->bill->status === RunningBillStatus::Certified && $remainingReceivablePaisa === 0,
         ]);
     }
 }

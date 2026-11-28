@@ -87,6 +87,10 @@
                                 <dd>{{ $employee->phone ?? '—' }}</dd>
                             </div>
                             <div class="flex justify-between gap-4">
+                                <dt class="text-zinc-500">{{ __('Email') }}</dt>
+                                <dd>{{ $employee->email ?? '—' }}</dd>
+                            </div>
+                            <div class="flex justify-between gap-4">
                                 <dt class="text-zinc-500">{{ __('SSF number') }}</dt>
                                 <dd class="font-mono">{{ $employee->ssf_no ?? '—' }}</dd>
                             </div>

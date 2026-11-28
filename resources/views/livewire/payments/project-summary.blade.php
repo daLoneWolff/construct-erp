@@ -139,7 +139,7 @@
                                 </flux:link>
                             </flux:table.cell>
                             <flux:table.cell><x-date :date="$payment->paid_on" /></flux:table.cell>
-                            <flux:table.cell>{{ $payment->job?->title ?? '—' }}</flux:table.cell>
+                            <flux:table.cell>{{ $payment->job?->title ?? __('General payment') }}</flux:table.cell>
                             <flux:table.cell>{{ $payment->contractor?->name ?? '—' }}</flux:table.cell>
                             <flux:table.cell>{{ str($payment->method->value)->replace('_', ' ')->title() }}</flux:table.cell>
                             <flux:table.cell class="text-right tabular-nums"><x-money :paisa="$payment->amount_paisa" /></flux:table.cell>

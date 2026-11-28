@@ -42,13 +42,13 @@
         <div class="grid divide-y divide-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             <div class="min-w-0 space-y-1 px-1 py-2 sm:px-5 sm:py-1">
                 <flux:text class="text-xs font-medium tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
-                    {{ __('Client advances received') }}
+                    {{ __('Client money received') }}
                 </flux:text>
                 <div class="min-w-0 max-w-full break-words text-xl font-semibold leading-tight tabular-nums [overflow-wrap:anywhere]">
-                    <x-money :paisa="$clientAdvancesReceivedPaisa" />
+                    <x-money :paisa="$clientMoneyReceivedPaisa" />
                 </div>
                 <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">
-                    {{ __('Recorded project advances') }}
+                    {{ __('Advances and receipts received') }}
                 </flux:text>
             </div>
 

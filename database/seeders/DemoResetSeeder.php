@@ -11,7 +11,7 @@ use RuntimeException;
 
 class DemoResetSeeder extends Seeder
 {
-    private const DEMO_EMAIL = 'admin@himalaya.test';
+    private const DEMO_EMAIL = 'admin@ranta.test';
 
     /** @var list<string> */
     private const TENANT_TABLES = [
@@ -23,7 +23,8 @@ class DemoResetSeeder extends Seeder
         'purchase_order_items', 'warehouses', 'material_receipts',
         'material_receipt_items', 'material_issues', 'material_issue_items',
         'stock_ledger', 'documents', 'running_bills', 'audit_logs', 'contractors',
-        'project_jobs', 'contractor_payments',
+        'project_jobs', 'contractor_payments', 'client_receipts', 'expenses',
+        'expense_attachments', 'project_partners',
     ];
 
     /**
@@ -43,6 +44,7 @@ class DemoResetSeeder extends Seeder
         'issued_to_employee_id', 'material_issue_id', 'assignee_employee_id',
         'raised_by_employee_id', 'submitted_by_employee_id', 'approved_by',
         'uploaded_by', 'created_by', 'vendor_id', 'contractor_id', 'reference_id',
+        'expense_id',
     ];
 
     private CalculationService $calc;
@@ -69,10 +71,13 @@ class DemoResetSeeder extends Seeder
             $this->seedWorkspaceMembership();
             $this->seedEmployees();
             $this->seedProjects();
+            $this->seedProjectPartners();
             $this->seedContractors();
             $this->seedMilestonesAndTasks();
             $this->seedProjectJobs();
             $this->seedContractorPayments();
+            $this->seedClientReceipts();
+            $this->seedExpenses();
             $this->seedProjectAssignments();
             $this->seedBoq();
             $this->seedVendors();
@@ -178,15 +183,15 @@ class DemoResetSeeder extends Seeder
     {
         $this->insert('companies', [[
             'id' => 1,
-            'name' => 'Himalaya Builders Pvt. Ltd.',
-            'slug' => 'himalaya-builders-1',
+            'name' => 'Ranta Infrastructure Pvt.Ltd',
+            'slug' => 'ranta-infrastructure-1',
             'owner_user_id' => 1,
             'pan' => '601234567',
             'vat' => '601234567',
             'address' => 'Ward 12, Lalitpur Metropolitan City',
             'district' => 'Lalitpur',
             'fiscal_year' => '2083/84',
-            'logo_mock' => '/mock/00000000-0000-4000-8000-000000000001',
+            'logo_mock' => '/images/ranta-logo.jpg',
             'onboarding_completed_at' => now(),
             'is_demo' => true,
         ]]);
@@ -211,32 +216,32 @@ class DemoResetSeeder extends Seeder
     private function seedEmployees(): void
     {
         $rows = [
-            [1, 'EMP-001', 'Sita Gurung', 'Project Director', null, 'Management', 'monthly', null, 20000000, '601111111', true, 'SSF-000001', '2019-03-15', '9841000001'],
-            [2, 'EMP-002', 'Bina Thapa', 'Project Manager', null, 'Management', 'monthly', null, 15000000, '601111112', true, 'SSF-000002', '2020-06-01', '9841000002'],
-            [3, 'EMP-003', 'Suman Karki', 'Site Engineer', null, 'Engineering', 'monthly', null, 8500000, '601111113', true, 'SSF-000003', '2021-09-10', '9841000003'],
-            [4, 'EMP-004', 'Ram Bahadur', 'Store Keeper', null, 'Store', 'monthly', null, 5500000, '601111114', true, 'SSF-000004', '2022-01-20', '9841000004'],
-            [5, 'EMP-005', 'Hari Magar', 'Foreman', null, 'Site Operations', 'monthly', null, 4500000, '601111115', true, 'SSF-000005', '2020-11-05', '9841000005'],
-            [6, 'EMP-006', 'Bikash Tamang', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222001', true, 'SSF-000006', '2022-02-14', '9841000006'],
-            [7, 'EMP-007', 'Gopal Shrestha', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222002', false, null, '2022-05-09', '9841000007'],
-            [8, 'EMP-008', 'Rajesh Yadav', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222003', true, 'SSF-000008', '2023-01-16', '9841000008'],
-            [9, 'EMP-009', 'Nabin Rai', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222004', false, null, '2023-07-03', '9841000009'],
-            [10, 'EMP-010', 'Suresh Bhandari', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222005', true, 'SSF-000010', '2024-03-11', '9841000010'],
-            [11, 'EMP-011', 'Mina Tamang', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223001', false, null, '2022-04-18', '9841000011'],
-            [12, 'EMP-012', 'Kamala Gurung', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223002', true, 'SSF-000012', '2022-08-22', '9841000012'],
-            [13, 'EMP-013', 'Sunita Magar', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223003', false, null, '2023-02-27', '9841000013'],
-            [14, 'EMP-014', 'Bimala Thapa', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223004', true, 'SSF-000014', '2023-06-19', '9841000014'],
-            [15, 'EMP-015', 'Radha Shrestha', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223005', false, null, '2024-01-08', '9841000015'],
-            [16, 'EMP-016', 'Dinesh Prajapati', 'Carpenter', 'Carpenter', 'Site Operations', 'daily', 160000, null, '601224001', true, 'SSF-000016', '2023-03-06', '9841000016'],
-            [17, 'EMP-017', 'Santosh Maharjan', 'Carpenter', 'Carpenter', 'Site Operations', 'daily', 160000, null, '601224002', false, null, '2023-05-15', '9841000017'],
-            [18, 'EMP-018', 'Prakash Shilpakar', 'Carpenter', 'Carpenter', 'Site Operations', 'daily', 160000, null, '601224003', true, 'SSF-000018', '2023-09-25', '9841000018'],
-            [19, 'EMP-019', 'Ramesh Bista', 'Steel Fixer', 'Steel Fixer', 'Site Operations', 'daily', 170000, null, '601225001', false, null, '2023-04-10', '9841000019'],
-            [20, 'EMP-020', 'Anil Chaudhary', 'Steel Fixer', 'Steel Fixer', 'Site Operations', 'daily', 170000, null, '601225002', true, 'SSF-000020', '2023-08-14', '9841000020'],
-            [21, 'EMP-021', 'Dipak Karki', 'Steel Fixer', 'Steel Fixer', 'Site Operations', 'daily', 170000, null, '601225003', false, null, '2023-11-20', '9841000021'],
-            [22, 'EMP-022', 'Sagar Adhikari', 'Electrician', 'Electrician', 'Site Operations', 'daily', 190000, null, '601226001', true, 'SSF-000022', '2023-07-17', '9841000022'],
-            [23, 'EMP-023', 'Bishal Shakya', 'Plumber', 'Plumber', 'Site Operations', 'daily', 180000, null, '601227001', true, 'SSF-000023', '2023-10-02', '9841000023'],
-            [24, 'EMP-024', 'Tek Bahadur Pun', 'Operator', 'Operator', 'Plant & Equipment', 'monthly', null, 6000000, '601228001', true, 'SSF-000024', '2021-04-12', '9841000024'],
-            [25, 'EMP-025', 'Manoj Lama', 'Operator', 'Operator', 'Plant & Equipment', 'monthly', null, 6000000, '601228002', true, 'SSF-000025', '2021-12-01', '9841000025'],
-            [26, 'EMP-026', 'Krishna Sapkota', 'Driver', 'Driver', 'Transport', 'monthly', null, 4000000, '601229001', true, 'SSF-000026', '2022-06-06', '9841000026'],
+            [1, 'EMP-001', 'Sita Gurung', 'Project Director', null, 'Management', 'monthly', null, 20000000, '601111111', true, 'SSF-000001', '2019-03-15', '9841000001', 'sita.gurung@ranta.test'],
+            [2, 'EMP-002', 'Bina Thapa', 'Project Manager', null, 'Management', 'monthly', null, 15000000, '601111112', true, 'SSF-000002', '2020-06-01', '9841000002', 'bina.thapa@ranta.test'],
+            [3, 'EMP-003', 'Suman Karki', 'Site Engineer', null, 'Engineering', 'monthly', null, 8500000, '601111113', true, 'SSF-000003', '2021-09-10', '9841000003', 'suman.karki@ranta.test'],
+            [4, 'EMP-004', 'Ram Bahadur', 'Store Keeper', null, 'Store', 'monthly', null, 5500000, '601111114', true, 'SSF-000004', '2022-01-20', '9841000004', 'ram.bahadur@ranta.test'],
+            [5, 'EMP-005', 'Hari Magar', 'Foreman', null, 'Site Operations', 'monthly', null, 4500000, '601111115', true, 'SSF-000005', '2020-11-05', '9841000005', 'hari.magar@ranta.test'],
+            [6, 'EMP-006', 'Bikash Tamang', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222001', true, 'SSF-000006', '2022-02-14', '9841000006', 'bikash.tamang@ranta.test'],
+            [7, 'EMP-007', 'Gopal Shrestha', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222002', false, null, '2022-05-09', '9841000007', 'gopal.shrestha@ranta.test'],
+            [8, 'EMP-008', 'Rajesh Yadav', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222003', true, 'SSF-000008', '2023-01-16', '9841000008', 'rajesh.yadav@ranta.test'],
+            [9, 'EMP-009', 'Nabin Rai', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222004', false, null, '2023-07-03', '9841000009', 'nabin.rai@ranta.test'],
+            [10, 'EMP-010', 'Suresh Bhandari', 'Mason', 'Mason', 'Site Operations', 'daily', 180000, null, '601222005', true, 'SSF-000010', '2024-03-11', '9841000010', 'suresh.bhandari@ranta.test'],
+            [11, 'EMP-011', 'Mina Tamang', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223001', false, null, '2022-04-18', '9841000011', 'mina.tamang@ranta.test'],
+            [12, 'EMP-012', 'Kamala Gurung', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223002', true, 'SSF-000012', '2022-08-22', '9841000012', 'kamala.gurung@ranta.test'],
+            [13, 'EMP-013', 'Sunita Magar', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223003', false, null, '2023-02-27', '9841000013', 'sunita.magar@ranta.test'],
+            [14, 'EMP-014', 'Bimala Thapa', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223004', true, 'SSF-000014', '2023-06-19', '9841000014', 'bimala.thapa@ranta.test'],
+            [15, 'EMP-015', 'Radha Shrestha', 'Helper', 'Helper', 'Site Operations', 'daily', 120000, null, '601223005', false, null, '2024-01-08', '9841000015', 'radha.shrestha@ranta.test'],
+            [16, 'EMP-016', 'Dinesh Prajapati', 'Carpenter', 'Carpenter', 'Site Operations', 'daily', 160000, null, '601224001', true, 'SSF-000016', '2023-03-06', '9841000016', 'dinesh.prajapati@ranta.test'],
+            [17, 'EMP-017', 'Santosh Maharjan', 'Carpenter', 'Carpenter', 'Site Operations', 'daily', 160000, null, '601224002', false, null, '2023-05-15', '9841000017', 'santosh.maharjan@ranta.test'],
+            [18, 'EMP-018', 'Prakash Shilpakar', 'Carpenter', 'Carpenter', 'Site Operations', 'daily', 160000, null, '601224003', true, 'SSF-000018', '2023-09-25', '9841000018', 'prakash.shilpakar@ranta.test'],
+            [19, 'EMP-019', 'Ramesh Bista', 'Steel Fixer', 'Steel Fixer', 'Site Operations', 'daily', 170000, null, '601225001', false, null, '2023-04-10', '9841000019', 'ramesh.bista@ranta.test'],
+            [20, 'EMP-020', 'Anil Chaudhary', 'Steel Fixer', 'Steel Fixer', 'Site Operations', 'daily', 170000, null, '601225002', true, 'SSF-000020', '2023-08-14', '9841000020', 'anil.chaudhary@ranta.test'],
+            [21, 'EMP-021', 'Dipak Karki', 'Steel Fixer', 'Steel Fixer', 'Site Operations', 'daily', 170000, null, '601225003', false, null, '2023-11-20', '9841000021', 'dipak.karki@ranta.test'],
+            [22, 'EMP-022', 'Sagar Adhikari', 'Electrician', 'Electrician', 'Site Operations', 'daily', 190000, null, '601226001', true, 'SSF-000022', '2023-07-17', '9841000022', 'sagar.adhikari@ranta.test'],
+            [23, 'EMP-023', 'Bishal Shakya', 'Plumber', 'Plumber', 'Site Operations', 'daily', 180000, null, '601227001', true, 'SSF-000023', '2023-10-02', '9841000023', 'bishal.shakya@ranta.test'],
+            [24, 'EMP-024', 'Tek Bahadur Pun', 'Operator', 'Operator', 'Plant & Equipment', 'monthly', null, 6000000, '601228001', true, 'SSF-000024', '2021-04-12', '9841000024', 'tek.pun@ranta.test'],
+            [25, 'EMP-025', 'Manoj Lama', 'Operator', 'Operator', 'Plant & Equipment', 'monthly', null, 6000000, '601228002', true, 'SSF-000025', '2021-12-01', '9841000025', 'manoj.lama@ranta.test'],
+            [26, 'EMP-026', 'Krishna Sapkota', 'Driver', 'Driver', 'Transport', 'monthly', null, 4000000, '601229001', true, 'SSF-000026', '2022-06-06', '9841000026', 'krishna.sapkota@ranta.test'],
         ];
 
         $this->insert('employees', array_map(fn (array $row) => [
@@ -254,6 +259,7 @@ class DemoResetSeeder extends Seeder
             'ssf_no' => $row[11],
             'joined_at' => $row[12],
             'phone' => $row[13],
+            'email' => $row[14],
             'status' => 'active',
         ], $rows));
     }
@@ -264,7 +270,7 @@ class DemoResetSeeder extends Seeder
         $now = now();
 
         $this->insert('users', [
-            ['id' => 1, 'name' => 'Anil Sharma', 'email' => 'admin@himalaya.test', 'email_verified_at' => $now, 'password' => $password, 'role' => 'admin', 'employee_id' => null],
+            ['id' => 1, 'name' => 'Anil Sharma', 'email' => 'admin@ranta.test', 'email_verified_at' => $now, 'password' => $password, 'role' => 'admin', 'employee_id' => null],
         ]);
     }
 
@@ -302,6 +308,24 @@ class DemoResetSeeder extends Seeder
                 'advance_paisa' => 420000000,
                 'advance_adjusted_paisa' => 420000000,
                 'status' => 'completed',
+            ],
+        ]);
+    }
+
+    private function seedProjectPartners(): void
+    {
+        $this->insert('project_partners', [
+            [
+                'id' => 1,
+                'project_id' => 1,
+                'name' => 'Ranta Infrastructure Pvt.Ltd',
+                'share_percent' => '70.00',
+            ],
+            [
+                'id' => 2,
+                'project_id' => 1,
+                'name' => 'Himalayan Infra JV Pvt. Ltd.',
+                'share_percent' => '30.00',
             ],
         ]);
     }
@@ -469,12 +493,12 @@ class DemoResetSeeder extends Seeder
     private function seedContractors(): void
     {
         $this->insert('contractors', [
-            ['id' => 1, 'name' => 'Dhan Bahadur Mason', 'phone' => '9841000201', 'address' => 'Ward 8, Lalitpur', 'pan' => '112233445', 'is_active' => true, 'notes' => 'Bricklaying and masonry crew.'],
-            ['id' => 2, 'name' => 'Krishna Plumbing Works', 'phone' => '9841000202', 'address' => 'Patan Dhoka, Lalitpur', 'pan' => '223344556', 'is_active' => true, 'notes' => 'Plumbing and sanitary lines.'],
-            ['id' => 3, 'name' => 'Sita Paints and Finishes', 'phone' => '9841000203', 'address' => 'Jawalakhel, Lalitpur', 'pan' => '334455667', 'is_active' => true, 'notes' => 'Interior painting and bridge approach finishes.'],
-            ['id' => 4, 'name' => 'Bikash Electrical Contractor', 'phone' => '9841000204', 'address' => 'Kupondole, Lalitpur', 'pan' => '445566778', 'is_active' => true, 'notes' => 'Internal wiring and fixtures.'],
-            ['id' => 5, 'name' => 'Ramesh Architectural Studio', 'phone' => '9841000205', 'address' => 'Sanepa, Lalitpur', 'pan' => '556677889', 'is_active' => true, 'notes' => 'Architectural detailing and drawings.'],
-            ['id' => 6, 'name' => 'Gopal Bridge Contractor', 'phone' => '9851000206', 'address' => 'Ward 4, Bhaktapur', 'pan' => '667788990', 'is_active' => true, 'notes' => 'Deck concreting and structural works.'],
+            ['id' => 1, 'name' => 'Dhan Bahadur Mason', 'phone' => '9841000201', 'email' => 'dhan.mason@ranta.test', 'address' => 'Ward 8, Lalitpur', 'pan' => '112233445', 'is_active' => true, 'notes' => 'Bricklaying and masonry crew.'],
+            ['id' => 2, 'name' => 'Krishna Plumbing Works', 'phone' => '9841000202', 'email' => 'krishna.plumbing@ranta.test', 'address' => 'Patan Dhoka, Lalitpur', 'pan' => '223344556', 'is_active' => true, 'notes' => 'Plumbing and sanitary lines.'],
+            ['id' => 3, 'name' => 'Sita Paints and Finishes', 'phone' => '9841000203', 'email' => 'sita.paints@ranta.test', 'address' => 'Jawalakhel, Lalitpur', 'pan' => '334455667', 'is_active' => true, 'notes' => 'Interior painting and bridge approach finishes.'],
+            ['id' => 4, 'name' => 'Bikash Electrical Contractor', 'phone' => '9841000204', 'email' => 'bikash.electrical@ranta.test', 'address' => 'Kupondole, Lalitpur', 'pan' => '445566778', 'is_active' => true, 'notes' => 'Internal wiring and fixtures.'],
+            ['id' => 5, 'name' => 'Ramesh Architectural Studio', 'phone' => '9841000205', 'email' => 'ramesh.arch@ranta.test', 'address' => 'Sanepa, Lalitpur', 'pan' => '556677889', 'is_active' => true, 'notes' => 'Architectural detailing and drawings.'],
+            ['id' => 6, 'name' => 'Gopal Bridge Contractor', 'phone' => '9851000206', 'email' => 'gopal.bridge@ranta.test', 'address' => 'Ward 4, Bhaktapur', 'pan' => '667788990', 'is_active' => true, 'notes' => 'Deck concreting and structural works.'],
         ]);
     }
 
@@ -538,6 +562,71 @@ class DemoResetSeeder extends Seeder
             'note' => $row[9],
             'created_by' => 1,
         ], $rows));
+    }
+
+    private function seedClientReceipts(): void
+    {
+        $prefix = 'CR-'.today()->year.'-';
+
+        $rows = [
+            [1, $prefix.'0001', 1, null, 1850000000, -175, 'advance', 'bank_transfer', 'ADV-PRJ001', 'Opening advance received from client.'],
+            [2, $prefix.'0002', 2, null, 420000000, -715, 'advance', 'bank_transfer', 'ADV-PRJ002', 'Opening advance received from client.'],
+        ];
+
+        $this->insert('client_receipts', array_map(fn (array $row): array => [
+            'id' => $row[0],
+            'receipt_no' => $row[1],
+            'project_id' => $row[2],
+            'running_bill_id' => $row[3],
+            'amount_paisa' => $row[4],
+            'received_on' => today()->addDays($row[5])->toDateString(),
+            'type' => $row[6],
+            'method' => $row[7],
+            'reference_no' => $row[8],
+            'note' => $row[9],
+            'created_by' => 1,
+        ], $rows));
+    }
+
+    private function seedExpenses(): void
+    {
+        $prefix = 'EXP-'.today()->year.'-';
+
+        $expenses = [
+            [1, $prefix.'0001', -20, 4500000, 'office', 'bank_transfer', 'Kathmandu Stationery', 'INV-8841', 'Office stationery and printing supplies.'],
+            [2, $prefix.'0002', -15, 12500000, 'fuel', 'cash', 'Narayani Fuel Center', 'FUEL-2204', 'Diesel for site vehicles and generator.'],
+            [3, $prefix.'0003', -12, 8500000, 'utilities', 'bank_transfer', 'Nepal Electricity Authority', 'NEA-0426', 'Monthly electricity bill for office.'],
+            [4, $prefix.'0004', -10, 35000000, 'rent', 'bank_transfer', 'Balaju Property Services', 'RENT-11', 'Office rent for current month.'],
+            [5, $prefix.'0005', -5, 18000000, 'professional_services', 'bank_transfer', 'Summit Legal & Audit', 'SL-109', 'Legal and accounting consultation.'],
+        ];
+
+        $this->insert('expenses', array_map(fn (array $row): array => [
+            'id' => $row[0],
+            'expense_no' => $row[1],
+            'expense_date' => today()->addDays($row[2])->toDateString(),
+            'amount_paisa' => $row[3],
+            'category' => $row[4],
+            'method' => $row[5],
+            'payee' => $row[6],
+            'reference_no' => $row[7],
+            'description' => $row[8],
+            'created_by' => 1,
+        ], $expenses));
+
+        $attachments = [
+            [1, 1, 'stationery-invoice.pdf', 245760, 'application/pdf'],
+            [2, 4, 'office-rent-receipt.jpg', 184320, 'image/jpeg'],
+            [3, 5, 'legal-consultation-invoice.pdf', 312000, 'application/pdf'],
+        ];
+
+        $this->insert('expense_attachments', array_map(fn (array $row): array => [
+            'id' => $row[0],
+            'expense_id' => $row[1],
+            'filename' => $row[2],
+            'size_bytes' => $row[3],
+            'mime' => $row[4],
+            'path_mock' => '/mock/'.sprintf('0000000%d-0000-4000-8000-%012d', $row[0] % 10, $row[0]),
+        ], $attachments));
     }
 
     private function seedWarehouses(): void
@@ -1222,7 +1311,7 @@ class DemoResetSeeder extends Seeder
         }
 
         $tables = [
-            'audit_logs', 'contractor_payments', 'project_jobs', 'contractors',
+            'audit_logs', 'project_partners', 'expense_attachments', 'expenses', 'client_receipts', 'contractor_payments', 'project_jobs', 'contractors',
             'stock_ledger', 'material_issue_items', 'material_issues',
             'material_receipt_items', 'material_receipts', 'purchase_order_items',
             'purchase_orders', 'material_requisition_items', 'material_requisitions',

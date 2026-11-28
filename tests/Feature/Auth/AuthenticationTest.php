@@ -18,25 +18,13 @@ class AuthenticationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_login_page_places_google_button_after_the_login_button(): void
-    {
-        $html = $this->get(route('login'))->assertOk()->getContent();
-
-        $loginButton = strpos($html, 'data-test="login-button"');
-        $googleButton = strpos($html, 'Continue with Google');
-
-        $this->assertNotFalse($loginButton);
-        $this->assertNotFalse($googleButton);
-        $this->assertLessThan($googleButton, $loginButton);
-    }
-
     public function test_login_hides_local_demo_credentials_when_demo_mode_is_disabled(): void
     {
         config()->set('demo.reset_enabled', false);
 
         $this->get(route('login'))
             ->assertOk()
-            ->assertDontSee('admin@himalaya.test');
+            ->assertDontSee('admin@ranta.test');
     }
 
     public function test_login_shows_local_demo_credentials_in_demo_mode(): void
@@ -45,7 +33,7 @@ class AuthenticationTest extends TestCase
 
         $this->get(route('login'))
             ->assertOk()
-            ->assertSee('admin@himalaya.test');
+            ->assertSee('admin@ranta.test');
     }
 
     public function test_users_can_authenticate_using_the_login_screen(): void

@@ -114,7 +114,7 @@ function procurementVendor(string $pan, float $tdsRate, string $name = 'Smoke Ve
 function procurementCompany(): Company
 {
     return tenantCompany([
-        'name' => 'Himalaya Construction',
+        'name' => 'Ranta Infrastructure',
         'pan' => '123456789',
         'vat' => '123456789',
         'address' => 'Kathmandu',

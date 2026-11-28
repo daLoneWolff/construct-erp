@@ -30,6 +30,17 @@
                         {{ __('Projects') }}
                     </flux:sidebar.item>
 
+                    @if (Route::has('client-receipts.index'))
+                        <flux:sidebar.item
+                            icon="arrow-down-tray"
+                            :href="route('client-receipts.index')"
+                            :current="request()->routeIs('client-receipts.*', 'projects.client-receipts*')"
+                            wire:navigate
+                        >
+                            {{ __('Client receipts') }}
+                        </flux:sidebar.item>
+                    @endif
+
                     @if (Route::has('contractors.index'))
                         <flux:sidebar.item
                             icon="users"
@@ -93,6 +104,7 @@
                     </flux:sidebar.group>
                 @endif
 
+                {{-- Warehouse menu hidden for now.
                 @if (Route::has('warehouses.index') || Route::has('receipts.index') || Route::has('issues.index') || Route::has('ledger.index'))
                     <flux:sidebar.group :heading="__('Warehouse')" class="grid gap-0.5">
                         @if (Route::has('warehouses.index'))
@@ -120,6 +132,7 @@
                         @endif
                     </flux:sidebar.group>
                 @endif
+                --}}
 
                 @if (Route::has('equipment.index') || Route::has('vehicles.index') || Route::has('documents.index') || Route::has('reports.project-summary'))
                     <flux:sidebar.group :heading="__('Office')" class="grid gap-0.5">
@@ -138,6 +151,12 @@
                         @if (Route::has('documents.index'))
                             <flux:sidebar.item icon="document" :href="route('documents.index')" :current="request()->routeIs('documents.*')" wire:navigate>
                                 {{ __('Documents') }}
+                            </flux:sidebar.item>
+                        @endif
+
+                        @if (Route::has('expenses.index'))
+                            <flux:sidebar.item icon="receipt-percent" :href="route('expenses.index')" :current="request()->routeIs('expenses.*')" wire:navigate>
+                                {{ __('Expenses') }}
                             </flux:sidebar.item>
                         @endif
 

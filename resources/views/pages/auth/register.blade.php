@@ -60,21 +60,6 @@
             </flux:button>
         </form>
 
-        <div class="flex items-center gap-3">
-            <div class="h-px flex-1 bg-border"></div>
-            <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('or sign up with Google') }}</flux:text>
-            <div class="h-px flex-1 bg-border"></div>
-        </div>
-
-        <flux:button
-            variant="outline"
-            icon="globe-alt"
-            :href="route('auth.google.redirect')"
-            class="w-full"
-        >
-            {{ __('Continue with Google') }}
-        </flux:button>
-
         <flux:text class="text-center text-sm">
             {{ __('Already have an account?') }}
             <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>

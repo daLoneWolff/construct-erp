@@ -63,17 +63,25 @@
         <thead>
             <tr>
                 <th>{{ __('Amount paid') }}</th>
-                <th class="num">{{ __('Job agreed') }}</th>
-                <th class="num">{{ __('Job paid to date') }}</th>
-                <th class="num">{{ __('Job balance') }}</th>
+                @if ($jobTotals)
+                    <th class="num">{{ __('Job agreed') }}</th>
+                    <th class="num">{{ __('Job paid to date') }}</th>
+                    <th class="num">{{ __('Job balance') }}</th>
+                @else
+                    <th>{{ __('Payment type') }}</th>
+                @endif
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td><strong><x-money :paisa="$payment->amount_paisa" /></strong></td>
-                <td class="num"><x-money :paisa="$jobTotals['agreed_paisa'] ?? null" /></td>
-                <td class="num"><x-money :paisa="$jobTotals['paid_paisa'] ?? null" /></td>
-                <td class="num"><x-money :paisa="$jobTotals['balance_paisa'] ?? null" /></td>
+                @if ($jobTotals)
+                    <td class="num"><x-money :paisa="$jobTotals['agreed_paisa']" /></td>
+                    <td class="num"><x-money :paisa="$jobTotals['paid_paisa']" /></td>
+                    <td class="num"><x-money :paisa="$jobTotals['balance_paisa']" /></td>
+                @else
+                    <td>{{ __('General / upfront payment (no task)') }}</td>
+                @endif
             </tr>
         </tbody>
     </table>
@@ -85,7 +93,11 @@
     @endif
 
     <p class="muted" style="margin-top: 16px;">
-        {{ __('Job balance is the agreed amount minus all recorded payments. TDS, variations and hired-worker wages are excluded.') }}
+        @if ($jobTotals)
+            {{ __('Job balance is the agreed amount minus all recorded payments. TDS, variations and hired-worker wages are excluded.') }}
+        @else
+            {{ __('This is a general/upfront contractor payment not linked to a specific task.') }}
+        @endif
     </p>
 
     <div class="signature" style="width: 45%; float: left;">

@@ -4,12 +4,15 @@ namespace App\Providers;
 
 use App\Models\Attendance;
 use App\Models\BoqItem;
+use App\Models\ClientReceipt;
 use App\Models\Contractor;
 use App\Models\ContractorPayment;
 use App\Models\DailySiteReport;
+use App\Models\Expense;
 use App\Models\MaterialRequisition;
 use App\Models\Project;
 use App\Models\ProjectJob;
+use App\Models\ProjectPartner;
 use App\Models\PurchaseOrder;
 use App\Models\RunningBill;
 use App\Models\User;
@@ -102,6 +105,9 @@ class AppServiceProvider extends ServiceProvider
             Contractor::class,
             ProjectJob::class,
             ContractorPayment::class,
+            ClientReceipt::class,
+            Expense::class,
+            ProjectPartner::class,
         ];
 
         foreach ($tracked as $model) {

@@ -469,3 +469,80 @@ test('contractor payment form rejects overpayment and tasks from another contrac
 
     expect(ContractorPayment::query()->count())->toBe(0);
 });
+
+test('contractor page shows record payment for contractors without payable tasks', function () {
+    $admin = contractorScreenAdmin();
+    $contractor = contractorScreenContractor('New Contractor', '900000001');
+
+    $this->actingAs($admin)
+        ->get(route('contractors.show', $contractor))
+        ->assertOk()
+        ->assertSee('Record Payment');
+});
+
+test('general upfront payment can be recorded without a task', function () {
+    $admin = contractorScreenAdmin();
+    $project = contractorScreenProject($admin->id, 'PRJ-GEN-1');
+    $contractor = contractorScreenContractor('Upfront Contractor', '900000002');
+
+    Livewire::actingAs($admin)
+        ->test(PaymentForm::class, ['contractor' => $contractor])
+        ->set('jobId', '')
+        ->set('amount', '500.00')
+        ->set('paidOn', '2026-11-01')
+        ->set('method', 'cash')
+        ->set('note', 'Advance for mobilization')
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertRedirect();
+
+    $payment = ContractorPayment::query()->latest('id')->firstOrFail();
+
+    expect($payment->project_job_id)->toBeNull()
+        ->and($payment->project_id)->toBeNull()
+        ->and($payment->contractor_id)->toBe($contractor->id)
+        ->and($payment->amount_paisa)->toBe(50000)
+        ->and($payment->note)->toBe('Advance for mobilization');
+
+    $this->actingAs($admin)
+        ->get(route('payments.show', $payment))
+        ->assertOk()
+        ->assertSee('General payment')
+        ->assertSee('Advance for mobilization');
+
+    $this->actingAs($admin)
+        ->get(route('payments.index'))
+        ->assertOk()
+        ->assertSee('General payment')
+        ->assertSee($payment->payment_no);
+});
+
+test('pre-project upfront payment can be recorded without project or task', function () {
+    $admin = contractorScreenAdmin();
+    $contractor = contractorScreenContractor('Advance Contractor', '900000003');
+
+    Livewire::actingAs($admin)
+        ->test(PaymentForm::class, ['contractor' => $contractor])
+        ->set('jobId', '')
+        ->set('projectId', '')
+        ->set('amount', '750.00')
+        ->set('paidOn', '2026-11-02')
+        ->set('method', 'cash')
+        ->set('note', 'Pre-project advance')
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertRedirect();
+
+    $payment = ContractorPayment::query()->latest('id')->firstOrFail();
+
+    expect($payment->project_job_id)->toBeNull()
+        ->and($payment->project_id)->toBeNull()
+        ->and($payment->contractor_id)->toBe($contractor->id)
+        ->and($payment->amount_paisa)->toBe(75000);
+
+    $this->actingAs($admin)
+        ->get(route('payments.show', $payment))
+        ->assertOk()
+        ->assertSee('No project')
+        ->assertSee('General payment');
+});

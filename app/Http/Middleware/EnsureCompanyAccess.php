@@ -17,7 +17,7 @@ class EnsureCompanyAccess
             return redirect()->route('companies.create');
         }
 
-        if (! $tenant->isOwnerOrAdmin()) {
+        if (! $tenant->hasCompanyAccess()) {
             abort(403);
         }
 

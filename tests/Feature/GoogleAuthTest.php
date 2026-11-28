@@ -16,17 +16,17 @@ class GoogleAuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_auth_screens_offer_google_sign_in(): void
+    public function test_auth_screens_do_not_offer_google_sign_in_for_now(): void
     {
         $this->get(route('login'))
             ->assertOk()
-            ->assertSee('Continue with Google')
-            ->assertSee(route('auth.google.redirect'), false);
+            ->assertDontSee('Continue with Google')
+            ->assertDontSee(route('auth.google.redirect'), false);
 
         $this->get(route('register'))
             ->assertOk()
-            ->assertSee('Continue with Google')
-            ->assertSee(route('auth.google.redirect'), false);
+            ->assertDontSee('Continue with Google')
+            ->assertDontSee(route('auth.google.redirect'), false);
     }
 
     public function test_google_redirect_shows_a_friendly_error_when_credentials_are_missing(): void

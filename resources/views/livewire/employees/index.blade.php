@@ -11,7 +11,7 @@
 
     <x-panel flush>
         <x-filter-bar>
-            <flux:input wire:model.live.debounce.300ms="search" :placeholder="__('Search name, code or designation')" icon="magnifying-glass" class="w-full sm:max-w-sm" />
+            <flux:input wire:model.live.debounce.300ms="search" :placeholder="__('Search name, code, email or designation')" icon="magnifying-glass" class="w-full sm:max-w-sm" />
             <flux:select wire:model.live="trade" class="w-full sm:w-44">
                 <flux:select.option value="">{{ __('All trades') }}</flux:select.option>
                 @foreach ($trades as $item)
@@ -35,6 +35,7 @@
                     <flux:table.columns>
                         <flux:table.column>{{ __('Code') }}</flux:table.column>
                         <flux:table.column>{{ __('Name') }}</flux:table.column>
+                        <flux:table.column>{{ __('Email') }}</flux:table.column>
                         <flux:table.column>{{ __('Trade') }}</flux:table.column>
                         <flux:table.column>{{ __('Designation') }}</flux:table.column>
                         <flux:table.column>{{ __('SSF') }}</flux:table.column>
@@ -55,6 +56,7 @@
                                     </flux:link>
                                     <flux:text class="text-xs text-zinc-500">{{ $employee->department }}</flux:text>
                                 </flux:table.cell>
+                                <flux:table.cell class="text-xs">{{ $employee->email ?: '—' }}</flux:table.cell>
                                 <flux:table.cell>{{ $employee->trade ?? '—' }}</flux:table.cell>
                                 <flux:table.cell>{{ $employee->designation }}</flux:table.cell>
                                 <flux:table.cell>

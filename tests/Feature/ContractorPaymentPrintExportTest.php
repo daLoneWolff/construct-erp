@@ -23,7 +23,7 @@ function contractorPrintAdmin(Company $company): User
 function contractorPrintCompany(): Company
 {
     return tenantCompany([
-        'name' => 'Himalaya Print Builders',
+        'name' => 'Ranta Print Builders',
         'pan' => '123456789',
         'vat' => '123456789',
         'address' => 'Lalitpur',
@@ -138,7 +138,7 @@ test('admin can open all three print views with expected markers', function () {
     $this->actingAs($fixture['admin'])
         ->get(route('print.payment', $fixture['payments'][0]))
         ->assertOk()
-        ->assertSee('Himalaya Print Builders')
+        ->assertSee('Ranta Print Builders')
         ->assertSee('PAYMENT RECEIPT')
         ->assertSee('CTP-2026-0001')
         ->assertSee('Dhan Bahadur Mason')

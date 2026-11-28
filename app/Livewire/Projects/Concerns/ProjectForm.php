@@ -34,6 +34,9 @@ trait ProjectForm
 
     public string $status = 'active';
 
+    /** @var array<int, array{name: string, share_percent: string}> */
+    public array $partners = [];
+
     protected function rules(): array
     {
         return [
@@ -49,11 +52,16 @@ trait ProjectForm
             'project_manager_id' => ['required', 'exists:users,id'],
             'advance_npr' => ['required', 'numeric', 'min:0'],
             'status' => ['required', Rule::enum(ProjectStatus::class)],
+            'partners' => ['array'],
+            'partners.*.name' => ['required', 'string', 'max:255'],
+            'partners.*.share_percent' => ['required', 'numeric', 'gt:0', 'lte:100'],
         ];
     }
 
     protected function fillFromProject(Project $project): void
     {
+        $project->loadMissing('partners');
+
         $this->code = $project->code;
         $this->name = $project->name;
         $this->client_name = $project->client_name;
@@ -66,6 +74,58 @@ trait ProjectForm
         $this->project_manager_id = (string) $project->project_manager_id;
         $this->advance_npr = (string) ($project->advance_paisa / 100);
         $this->status = $project->status->value;
+        $this->partners = $project->partners
+            ->map(fn ($partner): array => [
+                'name' => $partner->name,
+                'share_percent' => (string) $partner->share_percent,
+            ])
+            ->all();
+    }
+
+    public function addPartner(): void
+    {
+        $this->partners[] = ['name' => '', 'share_percent' => ''];
+    }
+
+    public function removePartner(int $index): void
+    {
+        unset($this->partners[$index]);
+        $this->partners = array_values($this->partners);
+    }
+
+    protected function validatePartners(): void
+    {
+        if ($this->partners === []) {
+            return;
+        }
+
+        $names = [];
+        $total = 0.0;
+
+        foreach ($this->partners as $index => $partner) {
+            $name = trim((string) ($partner['name'] ?? ''));
+            $key = mb_strtolower($name);
+
+            if ($name !== '' && isset($names[$key])) {
+                $this->addError("partners.{$index}.name", __('Partner name must be unique within the project.'));
+            }
+            $names[$key] = true;
+
+            $total += (float) ($partner['share_percent'] ?? 0);
+        }
+
+        if (round($total, 2) !== 100.0) {
+            $this->addError('partners', __('JV partner shares must total 100%.'));
+        }
+    }
+
+    /** @return array<int, array{name: string, share_percent: string}> */
+    protected function normalizedPartners(): array
+    {
+        return array_values(array_map(fn (array $partner): array => [
+            'name' => trim((string) ($partner['name'] ?? '')),
+            'share_percent' => number_format((float) ($partner['share_percent'] ?? 0), 2, '.', ''),
+        ], $this->partners));
     }
 
     protected function payload(): array

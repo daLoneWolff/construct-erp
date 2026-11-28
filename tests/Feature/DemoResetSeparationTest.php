@@ -52,7 +52,7 @@ class DemoResetSeparationTest extends TestCase
         $this->assertSame(1250000, ContractorPayment::find($fixture['payment']->id)?->amount_paisa);
         $this->assertSame(1, ContractorPayment::where('company_id', $fixture['company']->id)->count());
         $this->assertSame(1, $this->companyUserCountFor($fixture['company']->id));
-        $this->assertSame(1, User::where('email', 'admin@himalaya.test')->count());
+        $this->assertSame(1, User::where('email', 'admin@ranta.test')->count());
         $this->assertSame(1, Company::where('is_demo', true)->count());
     }
 
@@ -62,7 +62,7 @@ class DemoResetSeparationTest extends TestCase
 
         $this->registeredWorkspace();
 
-        $demoUser = User::where('email', 'admin@himalaya.test')->sole();
+        $demoUser = User::where('email', 'admin@ranta.test')->sole();
 
         config(['demo.reset_enabled' => true]);
 
@@ -70,7 +70,7 @@ class DemoResetSeparationTest extends TestCase
             ->post(route('demo.reset'))
             ->assertRedirect(route('dashboard'));
 
-        $resetUser = User::where('email', 'admin@himalaya.test')->sole();
+        $resetUser = User::where('email', 'admin@ranta.test')->sole();
 
         $this->assertNotSame($demoUser->id, $resetUser->id);
         $this->assertSame($resetUser->id, auth()->id());
@@ -86,7 +86,7 @@ class DemoResetSeparationTest extends TestCase
 
         config(['demo.reset_enabled' => false]);
 
-        $this->actingAs(User::where('email', 'admin@himalaya.test')->sole())
+        $this->actingAs(User::where('email', 'admin@ranta.test')->sole())
             ->post(route('demo.reset'))
             ->assertForbidden();
     }

@@ -75,7 +75,7 @@ return new class extends Migration
         ]);
 
         $ownerId = DB::table('users')
-            ->where('email', 'admin@himalaya.test')
+            ->where('email', 'admin@ranta.test')
             ->value('id');
 
         if ($ownerId === null) {

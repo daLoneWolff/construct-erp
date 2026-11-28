@@ -31,7 +31,7 @@ test('the admin can open the dashboard', function () {
 
 test('the dashboard shows the seeded company and its projects', function () {
     $company = tenantCompany([
-        'name' => 'Himalaya Builders Pvt. Ltd.',
+        'name' => 'Ranta Infrastructure Pvt.Ltd',
         'pan' => '601234567',
         'vat' => '601234567',
         'address' => 'Ward 12, Lalitpur',
@@ -63,7 +63,7 @@ test('the dashboard shows the seeded company and its projects', function () {
     $this->actingAs($admin)
         ->get('/')
         ->assertOk()
-        ->assertSee('Himalaya Builders')
+        ->assertSee('Ranta Infrastructure')
         ->assertSee('Smoke Test Tower')
         ->assertDontSee('Demo')
         ->assertSee('Reset demo');

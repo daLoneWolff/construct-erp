@@ -8,7 +8,7 @@
         </div>
 
         <div>
-            {{ $payment->project?->name }} · {{ $payment->job?->title }} · {{ $payment->contractor?->name }}
+            {{ $payment->project?->name ?? __('No project') }} ? {{ $payment->job?->title ?? __('General payment') }} ? {{ $payment->contractor?->name ?? __('No contractor') }}
         </div>
 
         <x-slot:actions>
@@ -37,11 +37,19 @@
                 <x-date :date="$payment->paid_on" />
             </div>
         </x-panel>
-        <x-stat-card
-            label="Task balance after payment"
-            :paisa="$payment->job?->balance_paisa"
-            hint="Agreed minus all recorded payments"
-        />
+        @if ($payment->job)
+            <x-stat-card
+                label="Task balance after payment"
+                :paisa="$payment->job->balance_paisa"
+                hint="Agreed minus all recorded payments"
+            />
+        @else
+            <x-stat-card
+                label="Payment type"
+                :value="__('General / upfront')"
+                hint="Not linked to a task"
+            />
+        @endif
     </div>
 
     <x-panel title="{{ __('Record details') }}">
@@ -51,10 +59,10 @@
                 <div class="mt-1">
                     @if ($payment->project)
                         <flux:link :href="route('projects.show', $payment->project)" wire:navigate>
-                            {{ $payment->project->code }} · {{ $payment->project->name }}
+                            {{ $payment->project->code }} ? {{ $payment->project->name }}
                         </flux:link>
                     @else
-                        —
+                        {{ __('No project') }}
                     @endif
                 </div>
             </div>
@@ -66,7 +74,7 @@
                             {{ $payment->job->title }}
                         </flux:link>
                     @else
-                        —
+                        {{ __('General payment') }}
                     @endif
                 </div>
             </div>
@@ -78,7 +86,7 @@
                             {{ $payment->contractor->name }}
                         </flux:link>
                     @else
-                        —
+                        ?
                     @endif
                 </div>
             </div>
@@ -88,11 +96,11 @@
             </div>
             <div>
                 <flux:text class="text-xs text-zinc-500">{{ __('Reference') }}</flux:text>
-                <div class="mt-1 font-mono text-sm">{{ $payment->reference_no ?: '—' }}</div>
+                <div class="mt-1 font-mono text-sm">{{ $payment->reference_no ?: '?' }}</div>
             </div>
             <div>
                 <flux:text class="text-xs text-zinc-500">{{ __('Recorded by') }}</flux:text>
-                <div class="mt-1">{{ $payment->createdBy?->name ?? '—' }}</div>
+                <div class="mt-1">{{ $payment->createdBy?->name ?? '?' }}</div>
             </div>
         </div>
 

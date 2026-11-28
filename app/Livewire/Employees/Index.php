@@ -31,7 +31,8 @@ class Index extends Component
             ->when($this->search, fn ($query) => $query->where(fn ($inner) => $inner
                 ->where('name', 'like', "%{$this->search}%")
                 ->orWhere('employee_code', 'like', "%{$this->search}%")
-                ->orWhere('designation', 'like', "%{$this->search}%")))
+                ->orWhere('designation', 'like', "%{$this->search}%")
+                ->orWhere('email', 'like', "%{$this->search}%")))
             ->when($this->status, fn ($query) => $query->where('status', $this->status))
             ->when($this->trade, fn ($query) => $query->where('trade', $this->trade))
             ->orderBy('employee_code')

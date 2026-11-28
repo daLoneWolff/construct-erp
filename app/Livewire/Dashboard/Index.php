@@ -14,6 +14,13 @@ class Index extends Component
 {
     private const DASHBOARD_LIMIT = 5;
 
+    public function mount(): void
+    {
+        if (auth()->user()?->isContractor()) {
+            $this->redirect(route('portal.dashboard'), navigate: true);
+        }
+    }
+
     public function render(CalculationService $calc): View
     {
         $company = app(TenantService::class)->currentCompany();
@@ -64,8 +71,8 @@ class Index extends Component
         return view('livewire.dashboard.index', [
             'companyRecord' => $company,
             'isEmptyWorkspace' => $isEmptyWorkspace,
-            'clientAdvancesReceivedPaisa' => $companyId !== null
-                ? $calc->clientAdvancesReceivedPaisa($companyId)
+            'clientMoneyReceivedPaisa' => $companyId !== null
+                ? $calc->clientMoneyReceivedPaisa($companyId)
                 : $emptySummary['agreed_paisa'],
             'paymentSummary' => $paymentSummary,
             'projectRows' => $projectRows,

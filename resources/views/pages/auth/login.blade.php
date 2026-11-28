@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-6">
         <x-auth-header
             :title="__('Log in to your account')"
-            :description="__('Enter your email and password below, or continue with Google.')"
+            :description="__('Enter your email and password below to access your workspace.')"
         />
 
         <x-auth-session-status class="text-center" :status="session('status')" />
@@ -50,21 +50,6 @@
             </flux:button>
         </form>
 
-        <div class="flex items-center gap-3">
-            <div class="h-px flex-1 bg-border"></div>
-            <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('or continue with Google') }}</flux:text>
-            <div class="h-px flex-1 bg-border"></div>
-        </div>
-
-        <flux:button
-            variant="outline"
-            icon="globe-alt"
-            :href="route('auth.google.redirect')"
-            class="w-full"
-        >
-            {{ __('Continue with Google') }}
-        </flux:button>
-
         @if (Route::has('register'))
             <flux:text class="text-center text-sm">
                 {{ __('New to the app?') }}
@@ -75,7 +60,7 @@
         @if (config('demo.reset_enabled'))
             <flux:callout variant="secondary" icon="information-circle" :heading="__('Local demo account')">
                 <flux:text class="text-sm">
-                    {{ __('The bundled fictional demo can still be opened with admin@himalaya.test / password.') }}
+                    {{ __('The bundled fictional demo can still be opened with admin@ranta.test / password.') }}
                 </flux:text>
             </flux:callout>
         @endif

@@ -4,6 +4,8 @@ namespace App\Livewire\Projects;
 
 use App\Livewire\Projects\Concerns\ProjectForm;
 use App\Models\Project;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -24,8 +26,20 @@ class Edit extends Component
     {
         $this->authorize('manage');
         $this->validate();
+        $this->validatePartners();
 
-        $this->project->update($this->payload());
+        if ($this->getErrorBag()->isNotEmpty()) {
+            throw ValidationException::withMessages($this->getErrorBag()->messages());
+        }
+
+        DB::transaction(function (): void {
+            $this->project->update($this->payload());
+
+            $this->project->partners()->delete();
+            foreach ($this->normalizedPartners() as $partner) {
+                $this->project->partners()->create($partner);
+            }
+        });
 
         session()->flash('success', 'Project updated.');
 

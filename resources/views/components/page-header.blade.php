@@ -7,7 +7,7 @@
         @if ($description)
             <flux:text class="text-sm text-zinc-500 dark:text-zinc-400">{{ $description }}</flux:text>
         @elseif (trim($slot) !== '')
-            <flux:text class="text-sm text-zinc-500 dark:text-zinc-400">{{ $slot }}</flux:text>
+            <div class="text-sm text-zinc-500 dark:text-zinc-400">{{ $slot }}</div>
         @endif
     </div>
 

@@ -10,10 +10,16 @@
             @if ($contractor->pan)
                 <flux:badge size="sm" color="zinc" class="font-mono">{{ $contractor->pan }}</flux:badge>
             @endif
+            <flux:badge size="sm" :color="$contractor->user_id ? 'green' : 'zinc'">
+                {{ $contractor->user_id ? __('Portal access enabled') : __('No portal access') }}
+            </flux:badge>
         </div>
 
         <div>
             {{ $contractor->phone ?: __('No phone') }}
+            @if ($contractor->email)
+                · {{ $contractor->email }}
+            @endif
             @if ($contractor->address)
                 · {{ $contractor->address }}
             @endif
@@ -70,18 +76,16 @@
             <flux:input wire:model.live="from" type="date" :label="__('Payment date from')" />
             <flux:input wire:model.live="to" type="date" :label="__('Payment date to')" />
 
-            @if ($hasPayableTasks)
-                <x-slot:actions>
-                    <flux:button
-                        variant="primary"
-                        icon="banknotes"
-                        :href="route('contractors.payments.create', array_filter(['contractor' => $contractor, 'project' => $projectId], fn ($value) => filled($value)))"
-                        wire:navigate
-                    >
-                        {{ __('Record Payment') }}
-                    </flux:button>
-                </x-slot:actions>
-            @endif
+            <x-slot:actions>
+                <flux:button
+                    variant="primary"
+                    icon="banknotes"
+                    :href="route('contractors.payments.create', array_filter(['contractor' => $contractor, 'project' => $projectId], fn ($value) => filled($value)))"
+                    wire:navigate
+                >
+                    {{ __('Record Payment') }}
+                </flux:button>
+            </x-slot:actions>
         </x-filter-bar>
 
         <div class="px-5 pb-4">
@@ -162,7 +166,7 @@
                             </flux:table.cell>
                             <flux:table.cell><x-date :date="$payment->paid_on" /></flux:table.cell>
                             <flux:table.cell>{{ $payment->project?->name ?? '—' }}</flux:table.cell>
-                            <flux:table.cell>{{ $payment->job?->title ?? '—' }}</flux:table.cell>
+                            <flux:table.cell>{{ $payment->job?->title ?? __('General payment') }}</flux:table.cell>
                             <flux:table.cell>{{ str($payment->method->value)->replace('_', ' ')->title() }}</flux:table.cell>
                             <flux:table.cell class="text-xs text-zinc-500">{{ $payment->reference_no ?: '—' }}</flux:table.cell>
                             <flux:table.cell class="text-right font-semibold tabular-nums"><x-money :paisa="$payment->amount_paisa" /></flux:table.cell>

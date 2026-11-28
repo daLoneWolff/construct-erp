@@ -46,13 +46,13 @@ php artisan serve                  # http://127.0.0.1:8000
 
 ## Demo login (local fictional data only)
 
-The seeded demo still has one account for the fictional Himalaya Builders demo
+The seeded demo still has one account for the fictional Ranta Infrastructure demo
 company. T2 adds signup, Google sign-in, password reset, and email verification
 for new accounts:
 
 | Email | Password |
 |---|---|
-| `admin@himalaya.test` | `password` |
+| `admin@ranta.test` | `password` |
 
 Every screen is available to this demo admin account. These credentials are
 **not** how a real customer gets access in the target product.

@@ -33,6 +33,7 @@ class Employee extends Model
         'ssf_no',
         'joined_at',
         'phone',
+        'email',
         'status',
     ];
 

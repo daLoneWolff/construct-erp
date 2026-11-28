@@ -42,6 +42,8 @@ class Form extends Component
 
     public string $phone = '';
 
+    public string $email = '';
+
     public string $status = 'active';
 
     public function mount(?Employee $employee = null): void
@@ -65,6 +67,7 @@ class Form extends Component
             $this->ssf_no = $employee->ssf_no ?? '';
             $this->joined_at = $employee->joined_at->toDateString();
             $this->phone = $employee->phone ?? '';
+            $this->email = $employee->email ?? '';
             $this->status = $employee->status->value;
         }
     }
@@ -92,6 +95,7 @@ class Form extends Component
             'ssf_no' => ['nullable', 'string', 'max:50'],
             'joined_at' => ['required', 'date'],
             'phone' => ['nullable', 'string', 'max:20'],
+            'email' => ['nullable', 'email', 'max:255'],
             'status' => ['required', Rule::enum(EmployeeStatus::class)],
         ]);
 
@@ -109,6 +113,7 @@ class Form extends Component
             'ssf_no' => $this->ssf_no ?: null,
             'joined_at' => $this->joined_at,
             'phone' => $this->phone ?: null,
+            'email' => $this->email ?: null,
             'status' => $this->status,
         ];
 

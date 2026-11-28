@@ -54,6 +54,16 @@ class TenantService
         return $this->hasRole(CompanyRole::Owner, CompanyRole::Admin);
     }
 
+    public function isContractor(): bool
+    {
+        return $this->hasRole(CompanyRole::Contractor);
+    }
+
+    public function hasCompanyAccess(): bool
+    {
+        return $this->hasRole(CompanyRole::Owner, CompanyRole::Admin, CompanyRole::Contractor);
+    }
+
     public function hasRole(CompanyRole ...$roles): bool
     {
         $company = $this->currentCompany();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Enums\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Support\Responsable;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
@@ -22,9 +23,15 @@ class PostAuthResponse implements LoginResponseContract, RegisterResponseContrac
             return redirect()->route('verification.notice');
         }
 
-        $destination = $user?->current_company_id !== null
-            ? route('dashboard', absolute: false)
-            : route('companies.create', absolute: false);
+        if ($user?->role === Role::Contractor) {
+            $destination = $user->current_company_id !== null
+                ? route('portal.dashboard', absolute: false)
+                : route('companies.create', absolute: false);
+        } else {
+            $destination = $user?->current_company_id !== null
+                ? route('dashboard', absolute: false)
+                : route('companies.create', absolute: false);
+        }
 
         if ($request->routeIs('verification.verify')) {
             $destination .= '?verified=1';

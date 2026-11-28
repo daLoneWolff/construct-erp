@@ -27,6 +27,12 @@
                 </flux:button>
             @endif
 
+            @if (Route::has('projects.client-receipts.create'))
+                <flux:button icon="banknotes" :href="route('projects.client-receipts.create', [$project, 'running_bill' => $bill->id])" wire:navigate>
+                    {{ __('Record receipt') }}
+                </flux:button>
+            @endif
+
             @can('certify')
                 @if ($canCertify)
                     <flux:button
@@ -36,6 +42,17 @@
                         wire:confirm="Certify this bill?"
                     >
                         {{ __('Certify') }}
+                    </flux:button>
+                @endif
+
+                @if ($canMarkPaid)
+                    <flux:button
+                        icon="check-badge"
+                        variant="primary"
+                        wire:click="markPaid"
+                        wire:confirm="{{ __('Mark this bill as paid?') }}"
+                    >
+                        {{ __('Mark paid') }}
                     </flux:button>
                 @endif
             @endcan
@@ -49,7 +66,7 @@
     @enderror
 
     <x-panel title="{{ __('Bill calculation') }}">
-        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             <div class="rounded-lg bg-zinc-50 p-3 dark:bg-zinc-800">
                 <flux:text class="text-xs text-zinc-500">{{ __('Work certified') }}</flux:text>
                 <div class="text-lg font-semibold tabular-nums"><x-money :paisa="$workCertifiedPaisa" /></div>
@@ -61,6 +78,14 @@
             <div class="rounded-lg border border-zinc-900 bg-zinc-900 p-3 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900">
                 <flux:text class="text-xs opacity-70">{{ __('Net payable') }}</flux:text>
                 <div class="text-lg font-semibold tabular-nums"><x-money :paisa="$totals['net_payable_paisa']" /></div>
+            </div>
+            <div class="rounded-lg bg-zinc-50 p-3 dark:bg-zinc-800">
+                <flux:text class="text-xs text-zinc-500">{{ __('Received from client') }}</flux:text>
+                <div class="text-lg font-semibold tabular-nums"><x-money :paisa="$receivedPaisa" /></div>
+            </div>
+            <div class="rounded-lg bg-zinc-50 p-3 dark:bg-zinc-800">
+                <flux:text class="text-xs text-zinc-500">{{ __('Remaining receivable') }}</flux:text>
+                <div class="text-lg font-semibold tabular-nums"><x-money :paisa="$remainingReceivablePaisa" /></div>
             </div>
         </div>
 

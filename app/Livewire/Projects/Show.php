@@ -22,6 +22,7 @@ class Show extends Component
         return view('livewire.projects.show', [
             'dashboard' => $calc->projectDashboard($this->project),
             'paymentSummary' => $calc->projectPaymentSummary($this->project),
+            'jvSummary' => $calc->projectJvSummary($this->project),
         ]);
     }
 }

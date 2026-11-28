@@ -11,11 +11,13 @@ use App\Enums\RunningBillStatus;
 use App\Enums\TaskStatus;
 use App\Models\Attendance;
 use App\Models\BoqItem;
+use App\Models\ClientReceipt;
 use App\Models\Company;
 use App\Models\Contractor;
 use App\Models\ContractorPayment;
 use App\Models\DailySiteReport;
 use App\Models\Employee;
+use App\Models\Expense;
 use App\Models\MaterialRequisition;
 use App\Models\Milestone;
 use App\Models\Project;
@@ -545,12 +547,18 @@ class CalculationService
         $shortageCount = $issueCounts['shortage'];
         $overConsumedCount = $issueCounts['over_consumed'];
 
+        $clientMoney = $this->projectClientMoneySummary($project);
+
         return [
             'boq_value_paisa' => $boq['boq_value_paisa'],
             'executed_value_paisa' => $boq['executed_value_paisa'],
             'executed_pct' => $boq['pct'],
             'certified_paisa' => (int) (clone $certifiedBills)->sum('work_certified_paisa'),
             'advance_remaining_paisa' => (int) $project->advance_paisa - (int) $project->advance_adjusted_paisa,
+            'contract_value_paisa' => $clientMoney['contract_value_paisa'],
+            'client_collected_paisa' => $clientMoney['collected_paisa'],
+            'client_remaining_to_collect_paisa' => $clientMoney['remaining_to_collect_paisa'],
+            'client_advance_collected_paisa' => $clientMoney['advance_collected_paisa'],
             'milestone_pct' => $totalTasks > 0 ? round($doneTasks / $totalTasks * 100, 2) : 0.0,
             'open_po_count' => PurchaseOrder::query()
                 ->where('project_id', $project->id)
@@ -568,6 +576,99 @@ class CalculationService
             'reconciliation_issue_threshold_pct' => self::RECONCILIATION_ISSUE_THRESHOLD_PCT,
             'manpower' => $this->manpowerLatest($project),
         ];
+    }
+
+    /**
+     * JV partner share summary for a project.
+     *
+     * Bases (v1):
+     * - work: project contract value (scope allocation)
+     * - billing: client money collected
+     * - cost: contractor payments paid on the project (direct tracked cost)
+     * - profit/loss: billing minus cost
+     *
+     * @return array{
+     *     partners: Collection<int, array{name: string, share_percent: float, work_paisa: int, billing_paisa: int, cost_paisa: int, profit_paisa: int}>,
+     *     totals: array{share_percent: float, work_paisa: int, billing_paisa: int, cost_paisa: int, profit_paisa: int},
+     *     bases: array{work_paisa: int, billing_paisa: int, cost_paisa: int, profit_paisa: int},
+     *     is_complete: bool
+     * }
+     */
+    public function projectJvSummary(Project $project): array
+    {
+        $project->loadMissing('partners');
+        $partners = $project->partners;
+
+        $clientMoney = $this->projectClientMoneySummary($project);
+        $billingPaisa = (int) $clientMoney['collected_paisa'];
+        $costPaisa = (int) ContractorPayment::query()->where('project_id', $project->id)->sum('amount_paisa');
+        $workPaisa = (int) $project->contract_value_paisa;
+        $profitPaisa = $billingPaisa - $costPaisa;
+
+        $bases = [
+            'work_paisa' => $workPaisa,
+            'billing_paisa' => $billingPaisa,
+            'cost_paisa' => $costPaisa,
+            'profit_paisa' => $profitPaisa,
+        ];
+
+        $rows = $partners->map(fn ($partner): array => [
+            'name' => $partner->name,
+            'share_percent' => (float) $partner->share_percent,
+            'work_paisa' => 0,
+            'billing_paisa' => 0,
+            'cost_paisa' => 0,
+            'profit_paisa' => 0,
+        ])->values();
+
+        if ($rows->isNotEmpty()) {
+            $rows = $this->allocateJvAmounts($rows, $bases);
+        }
+
+        $totalShare = round((float) $rows->sum('share_percent'), 2);
+
+        return [
+            'partners' => $rows,
+            'totals' => [
+                'share_percent' => $totalShare,
+                'work_paisa' => (int) $rows->sum('work_paisa'),
+                'billing_paisa' => (int) $rows->sum('billing_paisa'),
+                'cost_paisa' => (int) $rows->sum('cost_paisa'),
+                'profit_paisa' => (int) $rows->sum('profit_paisa'),
+            ],
+            'bases' => $bases,
+            'is_complete' => $rows->isNotEmpty() && $totalShare === 100.0,
+        ];
+    }
+
+    /**
+     * @param  Collection<int, array{name: string, share_percent: float, work_paisa: int, billing_paisa: int, cost_paisa: int, profit_paisa: int}>  $rows
+     * @param  array{work_paisa: int, billing_paisa: int, cost_paisa: int, profit_paisa: int}  $bases
+     * @return Collection<int, array{name: string, share_percent: float, work_paisa: int, billing_paisa: int, cost_paisa: int, profit_paisa: int}>
+     */
+    private function allocateJvAmounts(Collection $rows, array $bases): Collection
+    {
+        $allocated = $rows->map(function (array $row) use ($bases): array {
+            $share = (float) $row['share_percent'];
+            $row['work_paisa'] = (int) round($bases['work_paisa'] * $share / 100);
+            $row['billing_paisa'] = (int) round($bases['billing_paisa'] * $share / 100);
+            $row['cost_paisa'] = (int) round($bases['cost_paisa'] * $share / 100);
+            $row['profit_paisa'] = (int) round($bases['profit_paisa'] * $share / 100);
+
+            return $row;
+        })->values()->all();
+
+        foreach (['work_paisa', 'billing_paisa', 'cost_paisa', 'profit_paisa'] as $key) {
+            $base = (int) $bases[$key];
+            $sum = (int) array_sum(array_column($allocated, $key));
+            $diff = $base - $sum;
+            if ($diff !== 0 && $allocated !== []) {
+                $lastIndex = count($allocated) - 1;
+                $allocated[$lastIndex][$key] += $diff;
+            }
+        }
+
+        return collect($allocated)->values();
     }
 
     /**
@@ -598,9 +699,17 @@ class CalculationService
 
     public function clientAdvancesReceivedPaisa(?int $companyId = null): int
     {
-        return (int) Project::query()
+        return (int) ClientReceipt::query()
             ->when($companyId !== null, fn ($query) => $query->where('company_id', $companyId))
-            ->sum('advance_paisa');
+            ->where('type', 'advance')
+            ->sum('amount_paisa');
+    }
+
+    public function clientMoneyReceivedPaisa(?int $companyId = null): int
+    {
+        return (int) ClientReceipt::query()
+            ->when($companyId !== null, fn ($query) => $query->where('company_id', $companyId))
+            ->sum('amount_paisa');
     }
 
     /**
@@ -956,6 +1065,86 @@ class CalculationService
         return $prefix.str_pad((string) ($last + 1), 4, '0', STR_PAD_LEFT);
     }
 
+    public function nextClientReceiptNo(?CarbonInterface $receivedOn = null): string
+    {
+        $prefix = 'CR-'.($receivedOn ?? today())->year.'-';
+        $companyId = app(TenantService::class)->currentCompanyId();
+
+        $last = ClientReceipt::query()
+            ->when($companyId !== null, fn ($query) => $query->where('company_id', $companyId))
+            ->where('receipt_no', 'like', $prefix.'%')
+            ->pluck('receipt_no')
+            ->map(fn (string $receiptNo): int => (int) Str::afterLast($receiptNo, '-'))
+            ->max() ?? 0;
+
+        return $prefix.str_pad((string) ($last + 1), 4, '0', STR_PAD_LEFT);
+    }
+
+    public function nextExpenseNo(?CarbonInterface $date = null): string
+    {
+        $prefix = 'EXP-'.($date ?? today())->year.'-';
+        $companyId = app(TenantService::class)->currentCompanyId();
+
+        $last = Expense::query()
+            ->when($companyId !== null, fn ($query) => $query->where('company_id', $companyId))
+            ->where('expense_no', 'like', $prefix.'%')
+            ->pluck('expense_no')
+            ->map(fn (string $expenseNo): int => (int) Str::afterLast($expenseNo, '-'))
+            ->max() ?? 0;
+
+        return $prefix.str_pad((string) ($last + 1), 4, '0', STR_PAD_LEFT);
+    }
+
+    public function clientReceiptsTotalPaisa(Project $project): int
+    {
+        return (int) ClientReceipt::query()
+            ->where('project_id', $project->id)
+            ->sum('amount_paisa');
+    }
+
+    /**
+     * @return array{contract_value_paisa: int, collected_paisa: int, remaining_to_collect_paisa: int, advance_collected_paisa: int, running_bill_collected_paisa: int, retention_collected_paisa: int, other_collected_paisa: int}
+     */
+    public function projectClientMoneySummary(Project $project): array
+    {
+        $byType = ClientReceipt::query()
+            ->where('project_id', $project->id)
+            ->selectRaw('type, COALESCE(SUM(amount_paisa), 0) as total_paisa')
+            ->groupBy('type')
+            ->pluck('total_paisa', 'type');
+
+        $collectedPaisa = (int) $byType->sum();
+        $contractValuePaisa = (int) $project->contract_value_paisa;
+
+        return [
+            'contract_value_paisa' => $contractValuePaisa,
+            'collected_paisa' => $collectedPaisa,
+            'remaining_to_collect_paisa' => max(0, $contractValuePaisa - $collectedPaisa),
+            'advance_collected_paisa' => (int) ($byType['advance'] ?? 0),
+            'running_bill_collected_paisa' => (int) ($byType['running_bill'] ?? 0),
+            'retention_collected_paisa' => (int) ($byType['retention'] ?? 0),
+            'other_collected_paisa' => (int) ($byType['other'] ?? 0),
+        ];
+    }
+
+    public function runningBillReceivedPaisa(RunningBill $bill, ?int $excludeReceiptId = null): int
+    {
+        return (int) ClientReceipt::query()
+            ->where('running_bill_id', $bill->id)
+            ->when($excludeReceiptId !== null, fn ($query) => $query->whereKeyNot($excludeReceiptId))
+            ->sum('amount_paisa');
+    }
+
+    public function runningBillRemainingReceivablePaisa(RunningBill $bill, ?int $excludeReceiptId = null): int
+    {
+        return max(0, (int) $bill->net_payable_paisa - $this->runningBillReceivedPaisa($bill, $excludeReceiptId));
+    }
+
+    public function receiptWouldOverpayBill(RunningBill $bill, int $amountPaisa, ?int $excludeReceiptId = null): bool
+    {
+        return $amountPaisa > $this->runningBillRemainingReceivablePaisa($bill, $excludeReceiptId);
+    }
+
     /**
      * Project roll-up: one row per job plus a grouped row per assigned contractor.
      *
@@ -1015,25 +1204,64 @@ class CalculationService
             'balance_paisa' => $this->jobBalancePaisa($job),
         ])->values();
 
+        $jobPaidByContractor = $jobRows
+            ->filter(fn (array $row): bool => $row['contractor_id'] !== null)
+            ->groupBy('contractor_id')
+            ->map(fn (Collection $rows): int => (int) $rows->sum('paid_paisa'));
+
+        $allPaymentsByContractor = ContractorPayment::query()
+            ->where('project_id', $project->id)
+            ->whereNotNull('contractor_id')
+            ->selectRaw('contractor_id, COALESCE(SUM(amount_paisa), 0) as paid_paisa')
+            ->groupBy('contractor_id')
+            ->pluck('paid_paisa', 'contractor_id');
+
         $contractorRows = $jobRows
             ->filter(fn (array $row): bool => $row['contractor_id'] !== null)
             ->groupBy('contractor_id')
-            ->map(function (Collection $rows, int $contractorId): array {
+            ->map(function (Collection $rows, int $contractorId) use ($allPaymentsByContractor): array {
                 $first = $rows->first();
+                $agreedPaisa = (int) $rows->sum('agreed_paisa');
+                $paidPaisa = (int) ($allPaymentsByContractor[$contractorId] ?? $rows->sum('paid_paisa'));
 
                 return [
                     'contractor_id' => $contractorId,
                     'contractor' => $first['contractor'],
                     'job_count' => $rows->count(),
-                    'agreed_paisa' => (int) $rows->sum('agreed_paisa'),
-                    'paid_paisa' => (int) $rows->sum('paid_paisa'),
-                    'balance_paisa' => (int) $rows->sum('balance_paisa'),
+                    'agreed_paisa' => $agreedPaisa,
+                    'paid_paisa' => $paidPaisa,
+                    'balance_paisa' => $agreedPaisa - $paidPaisa,
                 ];
-            })
+            });
+
+        $missingContractorIds = $allPaymentsByContractor->keys()
+            ->map(fn ($id): int => (int) $id)
+            ->diff($contractorRows->keys()->map(fn ($id): int => (int) $id))
             ->values();
 
+        if ($missingContractorIds->isNotEmpty()) {
+            $missingContractors = Contractor::query()
+                ->whereIn('id', $missingContractorIds->all())
+                ->get()
+                ->keyBy('id');
+
+            foreach ($missingContractorIds as $contractorId) {
+                $paidPaisa = (int) ($allPaymentsByContractor[$contractorId] ?? 0);
+                $contractorRows->put($contractorId, [
+                    'contractor_id' => $contractorId,
+                    'contractor' => $missingContractors->get($contractorId),
+                    'job_count' => 0,
+                    'agreed_paisa' => 0,
+                    'paid_paisa' => $paidPaisa,
+                    'balance_paisa' => 0 - $paidPaisa,
+                ]);
+            }
+        }
+
+        $contractorRows = $contractorRows->values();
+
         $agreedPaisa = (int) $jobRows->sum('agreed_paisa');
-        $paidPaisa = (int) $jobRows->sum('paid_paisa');
+        $paidPaisa = (int) ContractorPayment::query()->where('project_id', $project->id)->sum('amount_paisa');
 
         return [
             'project' => $project,
@@ -1077,11 +1305,11 @@ class CalculationService
             'balance_paisa' => $this->jobBalancePaisa($job),
         ])->values();
 
-        $jobIds = $jobs->pluck('id');
-        $paidPaisa = $jobIds->isEmpty()
-            ? 0
-            : (int) ContractorPayment::query()->whereIn('project_job_id', $jobIds)->sum('amount_paisa');
         $agreedPaisa = (int) $jobRows->sum('agreed_paisa');
+        $paidPaisa = (int) ContractorPayment::query()
+            ->where('contractor_id', $contractor->id)
+            ->when($projectId !== null, fn ($query) => $query->where('project_id', $projectId))
+            ->sum('amount_paisa');
 
         $payments = $this->filteredContractorPayments($projectId, $contractor->id, $from, $to)
             ->with(['project', 'job', 'contractor'])
@@ -1167,6 +1395,7 @@ class CalculationService
                 $query->where(function ($inner) use ($term) {
                     $inner->where('name', 'like', '%'.$term.'%')
                         ->orWhere('phone', 'like', '%'.$term.'%')
+                        ->orWhere('email', 'like', '%'.$term.'%')
                         ->orWhere('pan', 'like', '%'.$term.'%');
                 });
             })
@@ -1208,6 +1437,77 @@ class CalculationService
                     'agreed_paisa' => $agreedPaisa,
                     'paid_paisa' => $paidPaisa,
                     'balance_paisa' => $agreedPaisa - $paidPaisa,
+                ];
+            })
+            ->values();
+    }
+
+    /**
+     * Summary for the contractor portal: own totals only.
+     *
+     * @return array{agreed_paisa: int, paid_paisa: int, balance_paisa: int, job_count: int, project_count: int}
+     */
+    public function contractorPortalSummary(Contractor $contractor): array
+    {
+        $jobs = ProjectJob::query()
+            ->where('contractor_id', $contractor->id)
+            ->get(['id', 'project_id', 'agreed_amount_paisa']);
+
+        $agreedPaisa = (int) $jobs->sum('agreed_amount_paisa');
+        $paidPaisa = (int) ContractorPayment::query()
+            ->where('contractor_id', $contractor->id)
+            ->sum('amount_paisa');
+
+        return [
+            'agreed_paisa' => $agreedPaisa,
+            'paid_paisa' => $paidPaisa,
+            'balance_paisa' => $agreedPaisa - $paidPaisa,
+            'job_count' => $jobs->count(),
+            'project_count' => $jobs->pluck('project_id')->filter()->unique()->count(),
+        ];
+    }
+
+    /**
+     * @return Collection<int, ContractorPayment>
+     */
+    public function contractorPortalPayments(Contractor $contractor, int $limit = 50): Collection
+    {
+        return ContractorPayment::query()
+            ->where('contractor_id', $contractor->id)
+            ->with(['project', 'job'])
+            ->orderByDesc('paid_on')
+            ->orderByDesc('id')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Assigned jobs grouped by project for the contractor portal.
+     *
+     * @return Collection<int, array{project: Project|null, jobs: Collection<int, array{job: ProjectJob, paid_paisa: int, balance_paisa: int}>}>
+     */
+    public function contractorPortalJobsByProject(Contractor $contractor): Collection
+    {
+        $jobs = ProjectJob::query()
+            ->where('contractor_id', $contractor->id)
+            ->with(['project', 'milestone'])
+            ->withSum('payments', 'amount_paisa')
+            ->orderBy('project_id')
+            ->orderBy('title')
+            ->get();
+
+        return $jobs
+            ->groupBy('project_id')
+            ->map(function (Collection $projectJobs): array {
+                $first = $projectJobs->first();
+
+                return [
+                    'project' => $first?->project,
+                    'jobs' => $projectJobs->map(fn (ProjectJob $job): array => [
+                        'job' => $job,
+                        'paid_paisa' => $this->jobPaidPaisa($job),
+                        'balance_paisa' => $this->jobBalancePaisa($job),
+                    ])->values(),
                 ];
             })
             ->values();
@@ -1285,6 +1585,88 @@ class CalculationService
         return $this->parseReportDate($value);
     }
 
+    public function filteredClientReceipts(
+        ?int $projectId = null,
+        ?string $from = null,
+        ?string $to = null,
+        ?int $companyId = null,
+        int $perPage = 25
+    ): LengthAwarePaginator {
+        return $this->filteredClientReceiptsQuery(
+            $projectId,
+            $this->paymentFilterDate($from),
+            $this->paymentFilterDate($to),
+            $companyId
+        )
+            ->with(['project', 'runningBill', 'creator'])
+            ->orderByDesc('received_on')
+            ->orderByDesc('id')
+            ->paginate($perPage);
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function clientReceiptFilterSummary(
+        ?int $projectId = null,
+        ?string $from = null,
+        ?string $to = null,
+        ?int $companyId = null
+    ): array {
+        $query = $this->filteredClientReceiptsQuery(
+            $projectId,
+            $this->paymentFilterDate($from),
+            $this->paymentFilterDate($to),
+            $companyId
+        );
+
+        return [
+            'receipt_count' => (int) (clone $query)->count(),
+            'received_paisa' => (int) (clone $query)->sum('amount_paisa'),
+        ];
+    }
+
+    public function filteredExpenses(
+        ?string $category = null,
+        ?string $from = null,
+        ?string $to = null,
+        ?int $companyId = null,
+        int $perPage = 25
+    ): LengthAwarePaginator {
+        return $this->filteredExpensesQuery(
+            $category,
+            $this->paymentFilterDate($from),
+            $this->paymentFilterDate($to),
+            $companyId
+        )
+            ->with(['creator', 'attachments'])
+            ->orderByDesc('expense_date')
+            ->orderByDesc('id')
+            ->paginate($perPage);
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function expenseFilterSummary(
+        ?string $category = null,
+        ?string $from = null,
+        ?string $to = null,
+        ?int $companyId = null
+    ): array {
+        $query = $this->filteredExpensesQuery(
+            $category,
+            $this->paymentFilterDate($from),
+            $this->paymentFilterDate($to),
+            $companyId
+        );
+
+        return [
+            'expense_count' => (int) (clone $query)->count(),
+            'total_paisa' => (int) (clone $query)->sum('amount_paisa'),
+        ];
+    }
+
     /**
      * @return array<int, string>
      */
@@ -1325,9 +1707,9 @@ class CalculationService
             ->map(fn (ContractorPayment $payment): array => [
                 'payment_no' => $payment->payment_no,
                 'date' => $payment->paid_on->format('d/m/Y'),
-                'project' => $payment->project->name,
-                'job' => $payment->job->title,
-                'contractor' => $payment->contractor->name,
+                'project' => $payment->project?->name ?? 'No project',
+                'job' => $payment->job?->title ?? 'General payment',
+                'contractor' => $payment->contractor?->name ?? '',
                 'method' => $payment->method->value,
                 'reference' => $payment->reference_no ?? '',
                 'amount_npr' => Npr::toInput($payment->amount_paisa),
@@ -1646,6 +2028,35 @@ class CalculationService
             ->when($contractorId !== null, fn ($query) => $query->where('contractor_id', $contractorId))
             ->when($from !== null, fn ($query) => $query->whereDate('paid_on', '>=', $from->toDateString()))
             ->when($to !== null, fn ($query) => $query->whereDate('paid_on', '<=', $to->toDateString()));
+    }
+
+    private function filteredClientReceiptsQuery(
+        ?int $projectId,
+        ?CarbonInterface $from,
+        ?CarbonInterface $to,
+        ?int $companyId = null
+    ): Builder {
+        return ClientReceipt::query()
+            ->when($companyId !== null, fn ($query) => $query->where('company_id', $companyId))
+            ->when($projectId !== null, fn ($query) => $query->where('project_id', $projectId))
+            ->when($from !== null, fn ($query) => $query->whereDate('received_on', '>=', $from->toDateString()))
+            ->when($to !== null, fn ($query) => $query->whereDate('received_on', '<=', $to->toDateString()));
+    }
+
+    /**
+     * @return Builder<Expense>
+     */
+    private function filteredExpensesQuery(
+        ?string $category,
+        ?CarbonInterface $from,
+        ?CarbonInterface $to,
+        ?int $companyId = null
+    ): Builder {
+        return Expense::query()
+            ->when($companyId !== null, fn ($query) => $query->where('company_id', $companyId))
+            ->when($category !== null && $category !== '', fn ($query) => $query->where('category', $category))
+            ->when($from !== null, fn ($query) => $query->whereDate('expense_date', '>=', $from->toDateString()))
+            ->when($to !== null, fn ($query) => $query->whereDate('expense_date', '<=', $to->toDateString()));
     }
 
     private function reconciliationStatus(float $boqQty, float $issuedQty, float $consumedQty): string

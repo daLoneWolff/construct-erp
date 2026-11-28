@@ -71,13 +71,17 @@
                             </flux:table.cell>
                             <flux:table.cell><x-date :date="$payment->paid_on" /></flux:table.cell>
                             <flux:table.cell>
-                                <div class="font-mono text-xs">{{ $payment->project?->code }}</div>
-                                <flux:text class="text-xs text-zinc-500">{{ $payment->project?->name }}</flux:text>
+                                <div class="font-mono text-xs">{{ $payment->project?->code ?? __('?') }}</div>
+                                <flux:text class="text-xs text-zinc-500">{{ $payment->project?->name ?? __('No project') }}</flux:text>
                             </flux:table.cell>
                             <flux:table.cell>
-                                <flux:link :href="route('jobs.show', $payment->job)" wire:navigate>
-                                    {{ $payment->job?->title ?? '—' }}
-                                </flux:link>
+                                @if ($payment->job)
+                                    <flux:link :href="route('jobs.show', $payment->job)" wire:navigate>
+                                        {{ $payment->job->title }}
+                                    </flux:link>
+                                @else
+                                    <flux:text class="text-zinc-500">{{ __('General payment') }}</flux:text>
+                                @endif
                             </flux:table.cell>
                             <flux:table.cell>
                                 @if ($payment->contractor)

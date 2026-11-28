@@ -5,6 +5,7 @@ namespace App\Livewire\Payments;
 use App\Enums\PaymentMethod;
 use App\Models\Contractor;
 use App\Models\ContractorPayment;
+use App\Models\Project;
 use App\Models\ProjectJob;
 use App\Services\CalculationService;
 use App\Support\Npr;
@@ -21,6 +22,8 @@ class Form extends Component
     public ?Contractor $contextContractor = null;
 
     public string $projectFilter = '';
+
+    public string $projectId = '';
 
     public string $jobId = '';
 
@@ -40,7 +43,8 @@ class Form extends Component
 
         if ($payment !== null) {
             $this->payment = $payment;
-            $this->jobId = (string) $payment->project_job_id;
+            $this->jobId = $payment->project_job_id === null ? '' : (string) $payment->project_job_id;
+            $this->projectId = $payment->project_id === null ? '' : (string) $payment->project_id;
             $this->amount = Npr::toInput($payment->amount_paisa);
             $this->paidOn = $payment->paid_on->toDateString();
             $this->method = $payment->method->value;
@@ -52,6 +56,7 @@ class Form extends Component
 
         if ($job !== null) {
             $this->jobId = (string) $job->id;
+            $this->projectId = (string) $job->project_id;
             $this->paidOn = today()->toDateString();
             $this->method = PaymentMethod::Cash->value;
 
@@ -61,6 +66,7 @@ class Form extends Component
         if ($contractor !== null) {
             $this->contextContractor = $contractor;
             $this->projectFilter = (string) request()->query('project', '');
+            $this->projectId = $this->projectFilter;
             $this->paidOn = today()->toDateString();
             $this->method = PaymentMethod::Cash->value;
 
@@ -75,7 +81,8 @@ class Form extends Component
         $this->authorize('manage');
 
         $this->validate([
-            'jobId' => ['required', 'integer', 'exists:project_jobs,id'],
+            'jobId' => ['nullable', 'integer', 'exists:project_jobs,id'],
+            'projectId' => ['nullable', 'integer', 'exists:projects,id'],
             'amount' => ['required', 'numeric', 'min:0.01'],
             'paidOn' => ['required', 'date'],
             'method' => ['required', Rule::enum(PaymentMethod::class)],
@@ -84,7 +91,6 @@ class Form extends Component
         ]);
 
         $calc = app(CalculationService::class);
-        $job = $this->payment?->job ?? ProjectJob::query()->with('contractor')->findOrFail((int) $this->jobId);
         $amountPaisa = Npr::toPaisa($this->amount);
 
         if ($amountPaisa <= 0) {
@@ -93,29 +99,49 @@ class Form extends Component
             return;
         }
 
-        if ($this->contextContractor !== null && (int) $job->contractor_id !== (int) $this->contextContractor->id) {
-            $this->addError('jobId', __('Select a task assigned to this contractor.'));
+        $job = null;
+        $projectId = null;
 
-            return;
+        if ($this->jobId !== '') {
+            $job = $this->payment?->job ?? ProjectJob::query()->with('contractor')->findOrFail((int) $this->jobId);
+            $projectId = (int) $job->project_id;
+
+            if ($this->contextContractor !== null && (int) $job->contractor_id !== (int) $this->contextContractor->id) {
+                $this->addError('jobId', __('Select a task assigned to this contractor.'));
+
+                return;
+            }
+
+            if ($this->payment === null && $job->contractor_id === null) {
+                $this->addError('jobId', __('Assign a contractor to this job before recording a payment.'));
+
+                return;
+            }
+
+            if ($calc->paymentWouldOverpay($job, $amountPaisa, $this->payment?->id)) {
+                $this->addError('amount', __('Amount exceeds the remaining unpaid balance for this job.'));
+
+                return;
+            }
+        } else {
+            $projectId = null;
         }
 
-        if ($this->payment === null && $job->contractor_id === null) {
-            $this->addError('jobId', __('Assign a contractor to this job before recording a payment.'));
+        $contractorId = $this->payment?->contractor_id
+            ?? $job?->contractor_id
+            ?? $this->contextContractor?->id;
 
-            return;
-        }
-
-        if ($calc->paymentWouldOverpay($job, $amountPaisa, $this->payment?->id)) {
-            $this->addError('amount', __('Amount exceeds the remaining unpaid balance for this job.'));
+        if ($contractorId === null) {
+            $this->addError('jobId', __('Select a contractor or task for this payment.'));
 
             return;
         }
 
         $attributes = [
             'payment_no' => $this->payment?->payment_no ?? $calc->nextContractorPaymentNo(Carbon::parse($this->paidOn)),
-            'project_id' => $job->project_id,
-            'project_job_id' => $job->id,
-            'contractor_id' => $this->payment?->contractor_id ?? $job->contractor_id,
+            'project_id' => $projectId,
+            'project_job_id' => $job?->id,
+            'contractor_id' => $contractorId,
             'amount_paisa' => $amountPaisa,
             'paid_on' => $this->paidOn,
             'method' => $this->method,
@@ -139,7 +165,10 @@ class Form extends Component
     public function render(CalculationService $calc)
     {
         $selectedJob = $this->payment?->job
-            ?? ProjectJob::query()->with(['project', 'contractor'])->find((int) $this->jobId);
+            ?? ($this->jobId !== '' ? ProjectJob::query()->with(['project', 'contractor'])->find((int) $this->jobId) : null);
+        $selectedProject = $selectedJob?->project
+            ?? ($this->projectId !== '' ? Project::query()->find((int) $this->projectId) : null)
+            ?? $this->payment?->project;
         $paidOn = $calc->paymentFilterDate($this->paidOn) ?? today();
 
         $jobs = collect();
@@ -172,14 +201,18 @@ class Form extends Component
             : 0;
         $enteredPaisa = Npr::toPaisa($this->amount);
         $remainingAfterPaisa = max(0, $remainingPaisa - $enteredPaisa);
+        $isGeneralPayment = $this->jobId === '';
 
         return view('livewire.payments.form', [
             'isEdit' => $this->payment !== null,
             'jobs' => $jobs,
+            'projects' => Project::query()->orderBy('code')->get(),
             'selectedJob' => $selectedJob,
+            'selectedProject' => $selectedProject,
             'payee' => $this->payment?->contractor ?? $selectedJob?->contractor ?? $this->contextContractor,
             'remainingPaisa' => $remainingPaisa,
             'remainingAfterPaisa' => $remainingAfterPaisa,
+            'isGeneralPayment' => $isGeneralPayment,
             'methods' => PaymentMethod::cases(),
             'paymentNo' => $this->payment?->payment_no ?? $calc->nextContractorPaymentNo($paidOn),
             'contextContractor' => $this->contextContractor,

@@ -189,8 +189,7 @@ it('renders all signup fields, sends verification mail, and gates application pa
 it('lets a Google-only account reach its workspace without a local password', function () {
     $this->get(route('login'))
         ->assertOk()
-        ->assertSee('Continue with Google')
-        ->assertSee(route('auth.google.redirect'), false);
+        ->assertDontSee('Continue with Google');
 
     t6MockGoogleUser([
         'name' => 'Google Acceptance Owner',
@@ -597,7 +596,7 @@ it('hides the demo reset action when demo resets are disabled', function () {
 
     config(['demo.reset_enabled' => false]);
 
-    $this->actingAs(User::where('email', 'admin@himalaya.test')->sole())
+    $this->actingAs(User::where('email', 'admin@ranta.test')->sole())
         ->get(route('dashboard'))
         ->assertOk()
         ->assertDontSee('Reset demo');

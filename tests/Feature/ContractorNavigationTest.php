@@ -1,8 +1,11 @@
 <?php
 
+use App\Enums\ClientReceiptType;
 use App\Enums\CompanyRole;
+use App\Enums\PaymentMethod;
 use App\Enums\ProjectStatus;
 use App\Enums\Role;
+use App\Models\ClientReceipt;
 use App\Models\Company;
 use App\Models\CompanyUser;
 use App\Models\Contractor;
@@ -30,7 +33,7 @@ function contractorNavAdmin(?int $companyId = null): User
 function contractorNavFixture(): array
 {
     $company = Company::create([
-        'name' => 'Himalaya Navigation Builders',
+        'name' => 'Ranta Navigation Builders',
         'pan' => '123456789',
         'vat' => '123456789',
         'address' => 'Lalitpur',
@@ -73,6 +76,18 @@ function contractorNavFixture(): array
         'address' => 'Lalitpur',
         'pan' => '112233445',
         'is_active' => true,
+    ]);
+
+    ClientReceipt::create([
+        'company_id' => $company->id,
+        'project_id' => $project->id,
+        'receipt_no' => 'CR-'.today()->year.'-0001',
+        'received_on' => today()->toDateString(),
+        'amount_paisa' => 5000000,
+        'type' => ClientReceiptType::Advance,
+        'method' => PaymentMethod::BankTransfer,
+        'reference_no' => 'ADV-NAV-1',
+        'created_by' => $admin->id,
     ]);
 
     $job = ProjectJob::create([
@@ -146,9 +161,9 @@ test('dashboard focuses on money received and contractor balances', function () 
         ->get('/')
         ->assertOk()
         ->assertSee('Financial overview')
-        ->assertSee('Himalaya Navigation Builders')
-        ->assertSee('Client advances received')
-        ->assertSee('Recorded project advances')
+        ->assertSee('Ranta Navigation Builders')
+        ->assertSee('Client money received')
+        ->assertSee('Advances and receipts received')
         ->assertSee(Npr::format(5000000), false)
         ->assertSee('Agreed task value')
         ->assertSee('Still owed to contractors')

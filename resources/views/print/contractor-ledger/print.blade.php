@@ -112,8 +112,8 @@
                 <tr>
                     <td class="font-mono">{{ $payment->payment_no }}</td>
                     <td><x-date :date="$payment->paid_on" /></td>
-                    <td>{{ $payment->project?->name ?? '—' }}</td>
-                    <td>{{ $payment->job?->title ?? '—' }}</td>
+                    <td>{{ $payment->project?->name ?? __('No project') }}</td>
+                    <td>{{ $payment->job?->title ?? __('General payment') }}</td>
                     <td>{{ str($payment->method->value)->replace('_', ' ')->title() }}</td>
                     <td>{{ $payment->reference_no ?: '—' }}</td>
                     <td class="num"><x-money :paisa="$payment->amount_paisa" /></td>

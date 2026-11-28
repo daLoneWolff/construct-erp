@@ -12,6 +12,8 @@
             @include('livewire.projects._form')
         </x-panel>
 
+        @include('livewire.projects._partners')
+
         <x-form-actions>
             <flux:button variant="ghost" :href="route('projects.index')" wire:navigate>
                 {{ __('Cancel') }}
